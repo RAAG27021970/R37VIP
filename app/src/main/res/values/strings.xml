@@ -6,4 +6,18 @@
     <string name="hint_enter_number">Enter number (0-36)</string>
     <string name="button_clear">Clear</string>
     <string name="button_enter">Enter</string>
+    <string name="stat_1">Stat 1</string>
+    <string name="stat_2">Stat 2</string>
+    <string name="stat_3">Stat 3</string>
+    <string name="stat_4">Stat 4</string>
+    <string name="stat_5">Stat 5</string>
+    <string name="stat_6">Stat 6</string>
+    <string name="stat_7">Stat 7</string>
+    <string name="stat_8">Stat 8</string>
+    <string name="delete_last">Borrar último</string>
+    <string name="delete_all">Borrar todo</string>
+    <string name="number_saved">Número %d guardado</string>
+    <string name="invalid_number">Ingrese un número válido (0-36)</string>
+    <string name="button_zero">0</string>
+    <string name="empty_stat">-</string>
 </resources>

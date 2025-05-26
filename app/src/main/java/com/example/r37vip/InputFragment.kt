@@ -90,7 +90,7 @@ class InputFragment : Fragment() {
 
         // Add clear, 0, and enter buttons in the last row
         val clearButton = MaterialButton(context).apply {
-            text = "Clear"
+            text = context.getString(R.string.button_clear)
             layoutParams = GridLayout.LayoutParams().apply {
                 width = 0
                 height = GridLayout.LayoutParams.WRAP_CONTENT
@@ -102,7 +102,7 @@ class InputFragment : Fragment() {
         numericKeypad.addView(clearButton)
 
         val zeroButton = MaterialButton(context).apply {
-            text = "0"
+            text = context.getString(R.string.button_zero)
             layoutParams = GridLayout.LayoutParams().apply {
                 width = 0
                 height = GridLayout.LayoutParams.WRAP_CONTENT
@@ -114,7 +114,7 @@ class InputFragment : Fragment() {
         numericKeypad.addView(zeroButton)
 
         val enterButton = MaterialButton(context).apply {
-            text = "Enter"
+            text = context.getString(R.string.button_enter)
             layoutParams = GridLayout.LayoutParams().apply {
                 width = 0
                 height = GridLayout.LayoutParams.WRAP_CONTENT
@@ -139,10 +139,14 @@ class InputFragment : Fragment() {
             viewLifecycleOwner.lifecycleScope.launch {
                 viewModel.insert(number)
                 numberInput.setText("")
-                Toast.makeText(context, "Número $number guardado", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, 
+                    getString(R.string.number_saved, number), 
+                    Toast.LENGTH_SHORT).show()
             }
         } else {
-            Toast.makeText(context, "Ingrese un número válido (0-36)", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, 
+                getString(R.string.invalid_number), 
+                Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -152,7 +156,7 @@ class InputFragment : Fragment() {
             StreetDelayCalculator.resetDelays()
             val indicators = listOf(stat1, stat2, stat3, stat4)
             indicators.forEach { 
-                it.text = "-"
+                it.text = getString(R.string.empty_stat)
                 it.setBackgroundColor(android.graphics.Color.WHITE)
                 it.setTextColor(android.graphics.Color.BLACK)
             }

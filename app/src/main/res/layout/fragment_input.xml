@@ -29,7 +29,7 @@
                 android:id="@+id/stat1"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="Stat 1"
+                android:text="@string/stat_1"
                 android:gravity="center"
                 android:padding="16dp"
                 android:textSize="28sp"/>
@@ -48,7 +48,7 @@
                 android:id="@+id/stat2"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="Stat 2"
+                android:text="@string/stat_2"
                 android:gravity="center"
                 android:padding="16dp"
                 android:textSize="28sp"/>
@@ -67,7 +67,7 @@
                 android:id="@+id/stat3"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="Stat 3"
+                android:text="@string/stat_3"
                 android:gravity="center"
                 android:padding="16dp"
                 android:textSize="28sp"/>
@@ -86,7 +86,7 @@
                 android:id="@+id/stat4"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="Stat 4"
+                android:text="@string/stat_4"
                 android:gravity="center"
                 android:padding="16dp"
                 android:textSize="28sp"/>
@@ -128,7 +128,7 @@
                 android:id="@+id/stat5"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="Stat 5"
+                android:text="@string/stat_5"
                 android:gravity="center"
                 android:padding="16dp"
                 android:textSize="28sp"/>
@@ -147,7 +147,7 @@
                 android:id="@+id/stat6"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="Stat 6"
+                android:text="@string/stat_6"
                 android:gravity="center"
                 android:padding="16dp"
                 android:textSize="28sp"/>
@@ -166,7 +166,7 @@
                 android:id="@+id/stat7"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="Stat 7"
+                android:text="@string/stat_7"
                 android:gravity="center"
                 android:padding="16dp"
                 android:textSize="28sp"/>
@@ -185,7 +185,7 @@
                 android:id="@+id/stat8"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="Stat 8"
+                android:text="@string/stat_8"
                 android:gravity="center"
                 android:padding="16dp"
                 android:textSize="28sp"/>
