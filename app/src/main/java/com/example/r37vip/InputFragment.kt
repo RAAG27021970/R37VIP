@@ -11,8 +11,11 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import com.example.r37vip.data.RouletteNumber
+import com.example.r37vip.stats.StreetDelayCalculator
 import com.example.r37vip.viewmodels.RouletteViewModel
 import com.google.android.material.button.MaterialButton
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 class InputFragment : Fragment() {
@@ -56,6 +59,15 @@ class InputFragment : Fragment() {
         stat8 = view.findViewById(R.id.stat8)
 
         setupNumericKeypad()
+        observeNumbers()
+    }
+
+    private fun observeNumbers() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.allNumbers.collectLatest { numbers ->
+                updateStatistics(numbers)
+            }
+        }
     }
 
     private fun setupNumericKeypad() {
@@ -127,7 +139,6 @@ class InputFragment : Fragment() {
             viewLifecycleOwner.lifecycleScope.launch {
                 viewModel.insert(number)
                 numberInput.setText("")
-                updateStatistics()
                 Toast.makeText(context, "Número $number guardado", Toast.LENGTH_SHORT).show()
             }
         } else {
@@ -135,8 +146,54 @@ class InputFragment : Fragment() {
         }
     }
 
-    private fun updateStatistics() {
-        // TODO: Implement statistics calculation for all 8 indicators
+    private fun updateStatistics(numbers: List<RouletteNumber>) {
+        // Si no hay números, reiniciamos los atrasos y mostramos guiones
+        if (numbers.isEmpty()) {
+            StreetDelayCalculator.resetDelays()
+            val indicators = listOf(stat1, stat2, stat3, stat4)
+            indicators.forEach { 
+                it.text = "-"
+                it.setBackgroundColor(android.graphics.Color.WHITE)
+                it.setTextColor(android.graphics.Color.BLACK)
+            }
+            return
+        }
+
+        val delays = StreetDelayCalculator.calculate(numbers)
+        
+        // Actualizamos los primeros 4 indicadores con los atrasos
+        val indicators = listOf(stat1, stat2, stat3, stat4)
+        
+        // Mostramos los atrasos calculados
+        delays.forEachIndexed { index, delay ->
+            if (index < indicators.size) {
+                indicators[index].text = delay.toString()
+                
+                // Aplicamos colores según el rango
+                when {
+                    delay <= 17 -> {
+                        // Verde claro con texto negro
+                        indicators[index].setBackgroundColor(android.graphics.Color.rgb(144, 238, 144))
+                        indicators[index].setTextColor(android.graphics.Color.BLACK)
+                    }
+                    delay <= 30 -> {
+                        // Amarillo con texto negro
+                        indicators[index].setBackgroundColor(android.graphics.Color.rgb(255, 255, 0))
+                        indicators[index].setTextColor(android.graphics.Color.BLACK)
+                    }
+                    delay <= 40 -> {
+                        // Naranja con texto blanco
+                        indicators[index].setBackgroundColor(android.graphics.Color.rgb(255, 165, 0))
+                        indicators[index].setTextColor(android.graphics.Color.WHITE)
+                    }
+                    else -> {
+                        // Rojo con texto blanco
+                        indicators[index].setBackgroundColor(android.graphics.Color.RED)
+                        indicators[index].setTextColor(android.graphics.Color.WHITE)
+                    }
+                }
+            }
+        }
     }
 
     companion object {
