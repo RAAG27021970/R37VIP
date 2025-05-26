@@ -19,4 +19,20 @@ interface RouletteNumberDao {
 
     @Query("DELETE FROM roulette_numbers WHERE id = (SELECT id FROM roulette_numbers ORDER BY timestamp DESC LIMIT 1)")
     suspend fun deleteLastNumber()
+
+    // Operaciones para DelayStats
+    @Query("SELECT * FROM delay_stats ORDER BY position ASC")
+    fun getAllDelayStats(): Flow<List<DelayStats>>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertDelayStats(delayStats: DelayStats)
+
+    @Query("DELETE FROM delay_stats")
+    suspend fun deleteAllDelayStats()
+
+    @Transaction
+    suspend fun updateAllDelayStats(delayStats: List<DelayStats>) {
+        deleteAllDelayStats()
+        delayStats.forEach { insertDelayStats(it) }
+    }
 } 

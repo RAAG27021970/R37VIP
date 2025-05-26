@@ -5,6 +5,7 @@ import kotlinx.coroutines.flow.Flow
 class RouletteRepository(private val rouletteNumberDao: RouletteNumberDao) {
     
     val allNumbers: Flow<List<RouletteNumber>> = rouletteNumberDao.getAllNumbers()
+    val allDelayStats: Flow<List<DelayStats>> = rouletteNumberDao.getAllDelayStats()
     
     suspend fun insert(number: Int) {
         rouletteNumberDao.insert(RouletteNumber(number = number))
@@ -16,9 +17,14 @@ class RouletteRepository(private val rouletteNumberDao: RouletteNumberDao) {
     
     suspend fun deleteAll() {
         rouletteNumberDao.deleteAll()
+        rouletteNumberDao.deleteAllDelayStats()
     }
 
     suspend fun deleteLastNumber() {
         rouletteNumberDao.deleteLastNumber()
+    }
+
+    suspend fun updateDelayStats(delayStats: List<DelayStats>) {
+        rouletteNumberDao.updateAllDelayStats(delayStats)
     }
 } 

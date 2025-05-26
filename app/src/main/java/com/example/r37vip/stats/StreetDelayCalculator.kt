@@ -1,8 +1,11 @@
 package com.example.r37vip.stats
 
+import android.util.Log
 import com.example.r37vip.data.RouletteNumber
 
 object StreetDelayCalculator {
+    private const val TAG = "StreetDelayCalculator"
+
     // Array para los números, inicializado con -1 ("a") ya que 0 es un número válido
     private val numbers = IntArray(4) { -1 }
     // Array para los atrasos de cada casillero
@@ -83,4 +86,31 @@ object StreetDelayCalculator {
     fun getDelay(position: Int): Int {
         return if (position < usedPositions) delays[position] else 0
     }
-} 
+
+    fun getNumbers(): IntArray = numbers.clone()
+    
+    fun getDelays(): IntArray = delays.clone()
+
+    fun getUsedPositions(): Int = usedPositions
+
+    fun restoreState(savedNumbers: IntArray, savedDelays: IntArray) {
+        require(savedNumbers.size == numbers.size && savedDelays.size == delays.size) {
+            "Arrays must match the size of internal arrays"
+        }
+
+        Log.d(TAG, "Restaurando estado - Números antes: ${numbers.contentToString()}")
+        Log.d(TAG, "Restaurando estado - Atrasos antes: ${delays.contentToString()}")
+        Log.d(TAG, "Restaurando estado - Posiciones usadas antes: $usedPositions")
+
+        // Copiamos los arrays en orden inverso para mantener la consistencia con calculate()
+        for (i in 0 until numbers.size) {
+            numbers[i] = savedNumbers[i]
+            delays[i] = savedDelays[i]
+        }
+        usedPositions = savedNumbers.count { it != -1 }
+
+        Log.d(TAG, "Restaurando estado - Números después: ${numbers.contentToString()}")
+        Log.d(TAG, "Restaurando estado - Atrasos después: ${delays.contentToString()}")
+        Log.d(TAG, "Restaurando estado - Posiciones usadas después: $usedPositions")
+    }
+}

@@ -13,7 +13,8 @@
         android:columnCount="2"
         android:rowCount="2"
         android:alignmentMode="alignMargins"
-        android:useDefaultMargins="true"
+        android:useDefaultMargins="false"
+        android:layout_marginTop="8dp"
         app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.card.MaterialCardView
@@ -21,9 +22,9 @@
             android:layout_height="wrap_content"
             android:layout_columnWeight="1"
             android:layout_rowWeight="1"
-            app:cardCornerRadius="8dp"
-            app:cardElevation="4dp"
-            android:layout_margin="8dp">
+            app:cardCornerRadius="4dp"
+            app:cardElevation="2dp"
+            android:layout_margin="4dp">
 
             <TextView
                 android:id="@+id/stat1"
@@ -31,8 +32,8 @@
                 android:layout_height="match_parent"
                 android:text="@string/stat_1"
                 android:gravity="center"
-                android:padding="16dp"
-                android:textSize="28sp"/>
+                android:padding="8dp"
+                android:textSize="22sp"/>
         </com.google.android.material.card.MaterialCardView>
 
         <com.google.android.material.card.MaterialCardView
@@ -40,9 +41,9 @@
             android:layout_height="wrap_content"
             android:layout_columnWeight="1"
             android:layout_rowWeight="1"
-            app:cardCornerRadius="8dp"
-            app:cardElevation="4dp"
-            android:layout_margin="8dp">
+            app:cardCornerRadius="4dp"
+            app:cardElevation="2dp"
+            android:layout_margin="4dp">
 
             <TextView
                 android:id="@+id/stat2"
@@ -50,8 +51,8 @@
                 android:layout_height="match_parent"
                 android:text="@string/stat_2"
                 android:gravity="center"
-                android:padding="16dp"
-                android:textSize="28sp"/>
+                android:padding="8dp"
+                android:textSize="22sp"/>
         </com.google.android.material.card.MaterialCardView>
 
         <com.google.android.material.card.MaterialCardView
@@ -59,9 +60,9 @@
             android:layout_height="wrap_content"
             android:layout_columnWeight="1"
             android:layout_rowWeight="1"
-            app:cardCornerRadius="8dp"
-            app:cardElevation="4dp"
-            android:layout_margin="8dp">
+            app:cardCornerRadius="4dp"
+            app:cardElevation="2dp"
+            android:layout_margin="4dp">
 
             <TextView
                 android:id="@+id/stat3"
@@ -69,8 +70,8 @@
                 android:layout_height="match_parent"
                 android:text="@string/stat_3"
                 android:gravity="center"
-                android:padding="16dp"
-                android:textSize="28sp"/>
+                android:padding="8dp"
+                android:textSize="22sp"/>
         </com.google.android.material.card.MaterialCardView>
 
         <com.google.android.material.card.MaterialCardView
@@ -78,9 +79,9 @@
             android:layout_height="wrap_content"
             android:layout_columnWeight="1"
             android:layout_rowWeight="1"
-            app:cardCornerRadius="8dp"
-            app:cardElevation="4dp"
-            android:layout_margin="8dp">
+            app:cardCornerRadius="4dp"
+            app:cardElevation="2dp"
+            android:layout_margin="4dp">
 
             <TextView
                 android:id="@+id/stat4"
@@ -88,8 +89,8 @@
                 android:layout_height="match_parent"
                 android:text="@string/stat_4"
                 android:gravity="center"
-                android:padding="16dp"
-                android:textSize="28sp"/>
+                android:padding="8dp"
+                android:textSize="22sp"/>
         </com.google.android.material.card.MaterialCardView>
 
     </GridLayout>
@@ -100,8 +101,8 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="#CCCCCC"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
         app:layout_constraintTop_toBottomOf="@id/statisticsContainer1"/>
 
     <!-- Second Dashboard Grid for Statistics -->
@@ -112,7 +113,7 @@
         android:columnCount="2"
         android:rowCount="2"
         android:alignmentMode="alignMargins"
-        android:useDefaultMargins="true"
+        android:useDefaultMargins="false"
         app:layout_constraintTop_toBottomOf="@id/separator">
 
         <com.google.android.material.card.MaterialCardView
@@ -120,9 +121,9 @@
             android:layout_height="wrap_content"
             android:layout_columnWeight="1"
             android:layout_rowWeight="1"
-            app:cardCornerRadius="8dp"
-            app:cardElevation="4dp"
-            android:layout_margin="8dp">
+            app:cardCornerRadius="4dp"
+            app:cardElevation="2dp"
+            android:layout_margin="4dp">
 
             <TextView
                 android:id="@+id/stat5"
@@ -130,8 +131,8 @@
                 android:layout_height="match_parent"
                 android:text="@string/stat_5"
                 android:gravity="center"
-                android:padding="16dp"
-                android:textSize="28sp"/>
+                android:padding="8dp"
+                android:textSize="22sp"/>
         </com.google.android.material.card.MaterialCardView>
 
         <com.google.android.material.card.MaterialCardView
@@ -139,9 +140,9 @@
             android:layout_height="wrap_content"
             android:layout_columnWeight="1"
             android:layout_rowWeight="1"
-            app:cardCornerRadius="8dp"
-            app:cardElevation="4dp"
-            android:layout_margin="8dp">
+            app:cardCornerRadius="4dp"
+            app:cardElevation="2dp"
+            android:layout_margin="4dp">
 
             <TextView
                 android:id="@+id/stat6"
@@ -149,8 +150,8 @@
                 android:layout_height="match_parent"
                 android:text="@string/stat_6"
                 android:gravity="center"
-                android:padding="16dp"
-                android:textSize="28sp"/>
+                android:padding="8dp"
+                android:textSize="22sp"/>
         </com.google.android.material.card.MaterialCardView>
 
         <com.google.android.material.card.MaterialCardView
@@ -158,9 +159,9 @@
             android:layout_height="wrap_content"
             android:layout_columnWeight="1"
             android:layout_rowWeight="1"
-            app:cardCornerRadius="8dp"
-            app:cardElevation="4dp"
-            android:layout_margin="8dp">
+            app:cardCornerRadius="4dp"
+            app:cardElevation="2dp"
+            android:layout_margin="4dp">
 
             <TextView
                 android:id="@+id/stat7"
@@ -168,8 +169,8 @@
                 android:layout_height="match_parent"
                 android:text="@string/stat_7"
                 android:gravity="center"
-                android:padding="16dp"
-                android:textSize="28sp"/>
+                android:padding="8dp"
+                android:textSize="22sp"/>
         </com.google.android.material.card.MaterialCardView>
 
         <com.google.android.material.card.MaterialCardView
@@ -177,9 +178,9 @@
             android:layout_height="wrap_content"
             android:layout_columnWeight="1"
             android:layout_rowWeight="1"
-            app:cardCornerRadius="8dp"
-            app:cardElevation="4dp"
-            android:layout_margin="8dp">
+            app:cardCornerRadius="4dp"
+            app:cardElevation="2dp"
+            android:layout_margin="4dp">
 
             <TextView
                 android:id="@+id/stat8"
@@ -187,8 +188,8 @@
                 android:layout_height="match_parent"
                 android:text="@string/stat_8"
                 android:gravity="center"
-                android:padding="16dp"
-                android:textSize="28sp"/>
+                android:padding="8dp"
+                android:textSize="22sp"/>
         </com.google.android.material.card.MaterialCardView>
 
     </GridLayout>
