@@ -33,6 +33,12 @@ class InputFragment : Fragment() {
     private lateinit var stat6: TextView
     private lateinit var stat7: TextView
     private lateinit var stat8: TextView
+    
+    // Nuevos indicadores para los últimos números
+    private lateinit var lastNumber1: TextView
+    private lateinit var lastNumber2: TextView
+    private lateinit var lastNumber3: TextView
+    private lateinit var lastNumber4: TextView
 
     private val viewModel: RouletteViewModel by viewModels()
 
@@ -64,6 +70,12 @@ class InputFragment : Fragment() {
                 stat6 = view.findViewById(R.id.stat6)
                 stat7 = view.findViewById(R.id.stat7)
                 stat8 = view.findViewById(R.id.stat8)
+                
+                // Initialize last numbers indicators
+                lastNumber1 = view.findViewById(R.id.lastNumber1)
+                lastNumber2 = view.findViewById(R.id.lastNumber2)
+                lastNumber3 = view.findViewById(R.id.lastNumber3)
+                lastNumber4 = view.findViewById(R.id.lastNumber4)
                 
                 Log.d(TAG, "Views inicializadas correctamente")
             } catch (e: Exception) {
@@ -121,6 +133,7 @@ class InputFragment : Fragment() {
                             Log.d(TAG, "Último número: ${lastNumber.number}, ID: ${lastNumber.id}")
                             if (lastNumber.id > 0) {
                                 updateStatistics(numbers)
+                                updateLastNumbers(numbers)
                             }
                         }
                     } catch (e: Exception) {
@@ -130,6 +143,37 @@ class InputFragment : Fragment() {
             } catch (e: Exception) {
                 Log.e(TAG, "Error en observeNumbers", e)
             }
+        }
+    }
+
+    private fun updateLastNumbers(numbers: List<RouletteNumber>) {
+        try {
+            // Limpiar todos los números primero
+            lastNumber1.text = "-"
+            lastNumber2.text = "-"
+            lastNumber3.text = "-"
+            lastNumber4.text = "-"
+            
+            if (numbers.size >= 4) {
+                // Tomamos los últimos 4 números en orden cronológico (del más antiguo al más reciente)
+                val lastFour = numbers.takeLast(4)
+                lastNumber1.text = lastFour[0].number.toString() // El más antiguo
+                lastNumber2.text = lastFour[1].number.toString()
+                lastNumber3.text = lastFour[2].number.toString()
+                lastNumber4.text = lastFour[3].number.toString() // El más reciente
+            } else {
+                // Si hay menos de 4 números, mostramos los que haya
+                numbers.takeLast(4).forEachIndexed { index, number ->
+                    when (index) {
+                        0 -> lastNumber1.text = number.number.toString()
+                        1 -> lastNumber2.text = number.number.toString()
+                        2 -> lastNumber3.text = number.number.toString()
+                        3 -> lastNumber4.text = number.number.toString()
+                    }
+                }
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "Error actualizando últimos números", e)
         }
     }
 
@@ -143,6 +187,12 @@ class InputFragment : Fragment() {
             it.setBackgroundColor(android.graphics.Color.WHITE)
             it.setTextColor(android.graphics.Color.BLACK)
         }
+        
+        // Reset last numbers indicators
+        lastNumber1.text = "-"
+        lastNumber2.text = "-"
+        lastNumber3.text = "-"
+        lastNumber4.text = "-"
         
         // Guardar el estado reseteado
         saveDelayStats()
@@ -167,11 +217,22 @@ class InputFragment : Fragment() {
                             try {
                                 // Restaurar estado de calles
                                 if (streetStats.isNotEmpty()) {
-                                    val streetNumbers = streetStats.map { it.number }.toIntArray()
-                                    val streetDelays = streetStats.map { it.delay }.toIntArray()
-                                    Log.d(TAG, "Restaurando estado de calles - Números: ${streetNumbers.contentToString()}")
-                                    Log.d(TAG, "Restaurando estado de calles - Atrasos: ${streetDelays.contentToString()}")
-                                    StreetDelayCalculator.restoreState(streetNumbers, streetDelays)
+                                    // Asegurarnos de tener exactamente 4 elementos
+                                    val streetNumbers = streetStats.map { it.number }.toMutableList()
+                                    val streetDelays = streetStats.map { it.delay }.toMutableList()
+                                    
+                                    // Rellenar con -1 y 0 hasta tener 4 elementos
+                                    while (streetNumbers.size < 4) {
+                                        streetNumbers.add(-1)
+                                        streetDelays.add(0)
+                                    }
+                                    // Tomar solo los primeros 4 elementos si hay más
+                                    val finalStreetNumbers = streetNumbers.take(4).toIntArray()
+                                    val finalStreetDelays = streetDelays.take(4).toIntArray()
+                                    
+                                    Log.d(TAG, "Restaurando estado de calles - Números: ${finalStreetNumbers.contentToString()}")
+                                    Log.d(TAG, "Restaurando estado de calles - Atrasos: ${finalStreetDelays.contentToString()}")
+                                    StreetDelayCalculator.restoreState(finalStreetNumbers, finalStreetDelays)
                                 }
                             } catch (e: Exception) {
                                 Log.e(TAG, "Error restaurando estado de calles", e)
@@ -180,11 +241,22 @@ class InputFragment : Fragment() {
                             try {
                                 // Restaurar estado de series
                                 if (seriesStats.isNotEmpty()) {
-                                    val seriesNumbers = seriesStats.map { it.number }.toIntArray()
-                                    val seriesDelays = seriesStats.map { it.delay }.toIntArray()
-                                    Log.d(TAG, "Restaurando estado de series - Números: ${seriesNumbers.contentToString()}")
-                                    Log.d(TAG, "Restaurando estado de series - Atrasos: ${seriesDelays.contentToString()}")
-                                    SeriesDelayCalculator.restoreState(seriesNumbers, seriesDelays)
+                                    // Asegurarnos de tener exactamente 4 elementos
+                                    val seriesNumbers = seriesStats.map { it.number }.toMutableList()
+                                    val seriesDelays = seriesStats.map { it.delay }.toMutableList()
+                                    
+                                    // Rellenar con -1 y 0 hasta tener 4 elementos
+                                    while (seriesNumbers.size < 4) {
+                                        seriesNumbers.add(-1)
+                                        seriesDelays.add(0)
+                                    }
+                                    // Tomar solo los primeros 4 elementos si hay más
+                                    val finalSeriesNumbers = seriesNumbers.take(4).toIntArray()
+                                    val finalSeriesDelays = seriesDelays.take(4).toIntArray()
+                                    
+                                    Log.d(TAG, "Restaurando estado de series - Números: ${finalSeriesNumbers.contentToString()}")
+                                    Log.d(TAG, "Restaurando estado de series - Atrasos: ${finalSeriesDelays.contentToString()}")
+                                    SeriesDelayCalculator.restoreState(finalSeriesNumbers, finalSeriesDelays)
                                 }
                             } catch (e: Exception) {
                                 Log.e(TAG, "Error restaurando estado de series", e)
@@ -237,6 +309,16 @@ class InputFragment : Fragment() {
         
         // Aplicamos colores según el rango
         when {
+            delay == 0 -> {
+                // Negro con texto blanco
+                indicator.setBackgroundColor(android.graphics.Color.BLACK)
+                indicator.setTextColor(android.graphics.Color.WHITE)
+            }
+            delay <= 13 -> {
+                // Gris claro con texto negro
+                indicator.setBackgroundColor(android.graphics.Color.LTGRAY)
+                indicator.setTextColor(android.graphics.Color.BLACK)
+            }
             delay <= 17 -> {
                 // Verde claro con texto negro
                 indicator.setBackgroundColor(android.graphics.Color.rgb(144, 238, 144))

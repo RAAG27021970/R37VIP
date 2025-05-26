@@ -194,6 +194,111 @@
 
     </GridLayout>
 
+    <!-- Second Separator Line -->
+    <View
+        android:id="@+id/separator2"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#CCCCCC"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintTop_toBottomOf="@id/statisticsContainer2"/>
+
+    <!-- Third Row for Last Numbers -->
+    <GridLayout
+        android:id="@+id/lastNumbersContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:columnCount="4"
+        android:rowCount="1"
+        android:alignmentMode="alignMargins"
+        android:useDefaultMargins="false"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="4dp"
+        app:layout_constraintTop_toBottomOf="@id/separator2">
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            app:cardCornerRadius="4dp"
+            app:cardElevation="1dp"
+            android:layout_margin="2dp">
+
+            <TextView
+                android:id="@+id/lastNumber1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="-"
+                android:gravity="center"
+                android:padding="4dp"
+                android:textSize="20sp"
+                android:textStyle="bold"/>
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            app:cardCornerRadius="4dp"
+            app:cardElevation="1dp"
+            android:layout_margin="2dp">
+
+            <TextView
+                android:id="@+id/lastNumber2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="-"
+                android:gravity="center"
+                android:padding="4dp"
+                android:textSize="20sp"
+                android:textStyle="bold"/>
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            app:cardCornerRadius="4dp"
+            app:cardElevation="1dp"
+            android:layout_margin="2dp">
+
+            <TextView
+                android:id="@+id/lastNumber3"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="-"
+                android:gravity="center"
+                android:padding="4dp"
+                android:textSize="20sp"
+                android:textStyle="bold"/>
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            app:cardCornerRadius="4dp"
+            app:cardElevation="1dp"
+            android:layout_margin="2dp">
+
+            <TextView
+                android:id="@+id/lastNumber4"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="-"
+                android:gravity="center"
+                android:padding="4dp"
+                android:textSize="20sp"
+                android:textStyle="bold"/>
+        </com.google.android.material.card.MaterialCardView>
+
+    </GridLayout>
+
     <Space
         android:id="@+id/middleSpacer"
         android:layout_width="match_parent"
