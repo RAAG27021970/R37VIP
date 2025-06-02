@@ -50,4 +50,13 @@ class RouletteViewModel(application: Application) : AndroidViewModel(application
             repository.updateDelayStats(delayStats)
         }
     }
+
+    fun resetCalculators() {
+        viewModelScope.launch {
+            // Eliminar todos los números
+            repository.deleteAll()
+            // Limpiar las estadísticas de retrasos
+            repository.updateDelayStats(emptyList())
+        }
+    }
 } 

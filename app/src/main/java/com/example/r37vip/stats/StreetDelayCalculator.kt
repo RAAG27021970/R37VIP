@@ -10,6 +10,8 @@ object StreetDelayCalculator {
     private val numbers = IntArray(4) { -1 }
     // Array para los atrasos de cada casillero
     private val delays = IntArray(4) { 0 }
+    // Array para contar cuántas veces cada posición llega a cero
+    private val counters = IntArray(8) { 0 }
     private var usedPositions = 0
 
     /**
@@ -27,6 +29,10 @@ object StreetDelayCalculator {
         for (i in numbers.indices) {
             numbers[i] = -1  // Volvemos a "a"
             delays[i] = 0
+        }
+        // Resetear los contadores también
+        for (i in counters.indices) {
+            counters[i] = 0
         }
         usedPositions = 0
     }
@@ -62,6 +68,7 @@ object StreetDelayCalculator {
             for (i in 0 until 4) {
                 if (this.numbers[i] != -1 && getStreetNumber(this.numbers[i]) == newStreet) {
                     delays[i] = 0  // Reiniciamos atraso si coincide la calle
+                    counters[i]++  // Incrementamos el contador cuando el delay llega a cero
                 }
             }
         }
@@ -90,6 +97,8 @@ object StreetDelayCalculator {
     fun getNumbers(): IntArray = numbers.clone()
     
     fun getDelays(): IntArray = delays.clone()
+
+    fun getCounters(): IntArray = counters.clone()
 
     fun getUsedPositions(): Int = usedPositions
 

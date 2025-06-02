@@ -40,6 +40,12 @@ class InputFragment : Fragment() {
     private lateinit var lastNumber3: TextView
     private lateinit var lastNumber4: TextView
 
+    // Contadores
+    private lateinit var counter1: TextView
+    private lateinit var counter2: TextView
+    private lateinit var counter3: TextView
+    private lateinit var counter4: TextView
+
     private val viewModel: RouletteViewModel by viewModels()
 
     override fun onCreateView(
@@ -76,6 +82,12 @@ class InputFragment : Fragment() {
                 lastNumber2 = view.findViewById(R.id.lastNumber2)
                 lastNumber3 = view.findViewById(R.id.lastNumber3)
                 lastNumber4 = view.findViewById(R.id.lastNumber4)
+
+                // Initialize counters
+                counter1 = view.findViewById(R.id.counter1)
+                counter2 = view.findViewById(R.id.counter2)
+                counter3 = view.findViewById(R.id.counter3)
+                counter4 = view.findViewById(R.id.counter4)
                 
                 Log.d(TAG, "Views inicializadas correctamente")
             } catch (e: Exception) {
@@ -115,6 +127,27 @@ class InputFragment : Fragment() {
         } catch (e: Exception) {
             Log.e(TAG, "Error general en onViewCreated", e)
         }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        clearOldCounterPreferences()
+    }
+
+    private fun clearOldCounterPreferences() {
+        val prefs = requireContext().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+        val editor = prefs.edit()
+        
+        // Eliminar las preferencias de los contadores antiguos
+        for (i in 1..8) {
+            editor.remove("counter$i")
+        }
+        for (i in 1..4) {
+            editor.remove("totalCnt$i")
+        }
+        
+        editor.apply()
+        Log.d(TAG, "Preferencias antiguas de contadores eliminadas")
     }
 
     private fun observeNumbers() {
@@ -178,9 +211,11 @@ class InputFragment : Fragment() {
     }
 
     private fun resetAllIndicators() {
+        // Resetear los calculadores
         StreetDelayCalculator.resetDelays()
         SeriesDelayCalculator.resetDelays()
         
+        // Resetear los indicadores
         val allIndicators = listOf(stat1, stat2, stat3, stat4, stat5, stat6, stat7, stat8)
         allIndicators.forEach { 
             it.text = getString(R.string.empty_stat)
@@ -188,11 +223,20 @@ class InputFragment : Fragment() {
             it.setTextColor(android.graphics.Color.BLACK)
         }
         
-        // Reset last numbers indicators
+        // Resetear los últimos números
         lastNumber1.text = "-"
         lastNumber2.text = "-"
         lastNumber3.text = "-"
         lastNumber4.text = "-"
+
+        // Resetear los contadores
+        counter4.text = "0"
+        counter3.text = "0"
+        counter2.text = "0"
+        counter1.text = "0"
+
+        // Resetear los calculadores del ViewModel
+        viewModel.resetCalculators()
         
         // Guardar el estado reseteado
         saveDelayStats()
@@ -266,7 +310,7 @@ class InputFragment : Fragment() {
                                 // Actualizar indicadores visuales
                                 val streetDelays = streetStats.map { it.delay }
                                 val seriesDelays = seriesStats.map { it.delay }
-                                updateIndicators(streetDelays, seriesDelays)
+                                updateIndicatorsFromDelays(streetDelays, seriesDelays)
                             } catch (e: Exception) {
                                 Log.e(TAG, "Error actualizando indicadores visuales", e)
                             }
@@ -285,59 +329,267 @@ class InputFragment : Fragment() {
         }
     }
 
-    private fun updateIndicators(streetDelays: List<Int>, seriesDelays: List<Int>) {
-        val streetIndicators = listOf(stat1, stat2, stat3, stat4)
-        val seriesIndicators = listOf(stat5, stat6, stat7, stat8)
-        
-        // Actualizar indicadores de calles
-        streetDelays.forEachIndexed { index, delay ->
-            if (index < streetIndicators.size) {
-                updateSingleIndicator(streetIndicators[index], delay)
-            }
+    private fun updateIndicators(indicators: List<Int>) {
+        // Crear una lista segura con valores por defecto
+        val safeIndicators = List(8) { index -> 
+            if (index < indicators.size) indicators[index] else -1 
         }
 
-        // Actualizar indicadores de series
-        seriesDelays.forEachIndexed { index, delay ->
-            if (index < seriesIndicators.size) {
-                updateSingleIndicator(seriesIndicators[index], delay)
+        // Actualizar los indicadores
+        stat1.text = if (safeIndicators[0] >= 0) safeIndicators[0].toString() else "-"
+        stat2.text = if (safeIndicators[1] >= 0) safeIndicators[1].toString() else "-"
+        stat3.text = if (safeIndicators[2] >= 0) safeIndicators[2].toString() else "-"
+        stat4.text = if (safeIndicators[3] >= 0) safeIndicators[3].toString() else "-"
+        stat5.text = if (safeIndicators[4] >= 0) safeIndicators[4].toString() else "-"
+        stat6.text = if (safeIndicators[5] >= 0) safeIndicators[5].toString() else "-"
+        stat7.text = if (safeIndicators[6] >= 0) safeIndicators[6].toString() else "-"
+        stat8.text = if (safeIndicators[7] >= 0) safeIndicators[7].toString() else "-"
+
+        // Aplicar colores según el valor
+        val indicatorViews = listOf(stat1, stat2, stat3, stat4, stat5, stat6, stat7, stat8)
+        safeIndicators.forEachIndexed { index, delay ->
+            if (index < indicatorViews.size) {
+                when {
+                    delay == 0 -> {
+                        // Negro con texto blanco
+                        indicatorViews[index].setBackgroundColor(android.graphics.Color.BLACK)
+                        indicatorViews[index].setTextColor(android.graphics.Color.WHITE)
+                    }
+                    delay <= 13 -> {
+                        // Gris claro con texto negro
+                        indicatorViews[index].setBackgroundColor(android.graphics.Color.LTGRAY)
+                        indicatorViews[index].setTextColor(android.graphics.Color.BLACK)
+                    }
+                    delay <= 17 -> {
+                        // Verde claro con texto negro
+                        indicatorViews[index].setBackgroundColor(android.graphics.Color.rgb(144, 238, 144))
+                        indicatorViews[index].setTextColor(android.graphics.Color.BLACK)
+                    }
+                    delay <= 30 -> {
+                        // Amarillo con texto negro
+                        indicatorViews[index].setBackgroundColor(android.graphics.Color.rgb(255, 255, 0))
+                        indicatorViews[index].setTextColor(android.graphics.Color.BLACK)
+                    }
+                    delay <= 40 -> {
+                        // Naranja con texto blanco
+                        indicatorViews[index].setBackgroundColor(android.graphics.Color.rgb(255, 165, 0))
+                        indicatorViews[index].setTextColor(android.graphics.Color.WHITE)
+                    }
+                    else -> {
+                        // Rojo con texto blanco
+                        indicatorViews[index].setBackgroundColor(android.graphics.Color.RED)
+                        indicatorViews[index].setTextColor(android.graphics.Color.WHITE)
+                    }
+                }
             }
         }
     }
 
-    private fun updateSingleIndicator(indicator: TextView, delay: Int) {
-        indicator.text = delay.toString()
+    private fun updateIndicatorsFromDelays(streetDelays: List<Int>, seriesDelays: List<Int>) {
+        Log.d(TAG, "Actualizando indicadores - Street Delays: $streetDelays, Series Delays: $seriesDelays")
         
-        // Aplicamos colores según el rango
-        when {
-            delay == 0 -> {
-                // Negro con texto blanco
-                indicator.setBackgroundColor(android.graphics.Color.BLACK)
-                indicator.setTextColor(android.graphics.Color.WHITE)
+        // Asegurarnos de que cada lista tenga 4 elementos
+        val paddedStreetDelays = List(4) { index -> 
+            if (index < streetDelays.size) streetDelays[index] else -1 
+        }
+        val paddedSeriesDelays = List(4) { index -> 
+            if (index < seriesDelays.size) seriesDelays[index] else -1 
+        }
+
+        val allDelays = paddedStreetDelays + paddedSeriesDelays
+        Log.d(TAG, "Todos los atrasos combinados: $allDelays")
+        updateIndicators(allDelays)
+    }
+
+    private fun updateStatistics(numbers: List<RouletteNumber>) {
+        if (numbers.isEmpty()) {
+            Log.d(TAG, "No hay números, reseteando todo")
+            resetAllIndicators()
+            return
+        }
+
+        try {
+            // Obtener el último número ingresado
+            val lastNumber = numbers.last().number
+            Log.d(TAG, "Último número ingresado: $lastNumber")
+            
+            // Calcular atrasos actuales
+            val currentStreetDelays = StreetDelayCalculator.calculate(numbers)
+            val seriesDelays = SeriesDelayCalculator.calculate(numbers)
+            
+            // Verificar si el último número pertenece a alguna calle
+            val streetIndices = getStreetsForNumber(lastNumber)
+            Log.d(TAG, "El número $lastNumber pertenece a las calles: $streetIndices")
+            
+            // Actualizar los indicadores con los nuevos atrasos
+            updateIndicatorsFromDelays(currentStreetDelays, seriesDelays)
+
+            // Actualizar los contadores
+            val counters = StreetDelayCalculator.getCounters()
+            counter4.text = counters[0].toString()
+            counter3.text = counters[1].toString()
+            counter2.text = counters[2].toString()
+            counter1.text = counters[3].toString()
+
+            // Guardar el estado actual
+            saveDelayStats()
+        } catch (e: Exception) {
+            Log.e(TAG, "Error al actualizar estadísticas", e)
+        }
+    }
+
+    private fun getStreetsForNumber(number: Int): List<Int> {
+        val streets = mutableListOf<Int>()
+        
+        // Solo números del 1 al 12 pertenecen a calles
+        if (number in 1..12) {
+            // Calle 1 (1,2,3)
+            if (number in 1..3) {
+                streets.add(0)
+                Log.d(TAG, "Número $number pertenece a la calle 1")
             }
-            delay <= 13 -> {
-                // Gris claro con texto negro
-                indicator.setBackgroundColor(android.graphics.Color.LTGRAY)
-                indicator.setTextColor(android.graphics.Color.BLACK)
+            // Calle 2 (4,5,6)
+            if (number in 4..6) {
+                streets.add(1)
+                Log.d(TAG, "Número $number pertenece a la calle 2")
             }
-            delay <= 17 -> {
-                // Verde claro con texto negro
-                indicator.setBackgroundColor(android.graphics.Color.rgb(144, 238, 144))
-                indicator.setTextColor(android.graphics.Color.BLACK)
+            // Calle 3 (7,8,9)
+            if (number in 7..9) {
+                streets.add(2)
+                Log.d(TAG, "Número $number pertenece a la calle 3")
             }
-            delay <= 30 -> {
-                // Amarillo con texto negro
-                indicator.setBackgroundColor(android.graphics.Color.rgb(255, 255, 0))
-                indicator.setTextColor(android.graphics.Color.BLACK)
+            // Calle 4 (10,11,12)
+            if (number in 10..12) {
+                streets.add(3)
+                Log.d(TAG, "Número $number pertenece a la calle 4")
             }
-            delay <= 40 -> {
-                // Naranja con texto blanco
-                indicator.setBackgroundColor(android.graphics.Color.rgb(255, 165, 0))
-                indicator.setTextColor(android.graphics.Color.WHITE)
+        } else {
+            Log.d(TAG, "Número $number no pertenece a ninguna calle")
+        }
+        
+        return streets
+    }
+
+    private fun saveDelayStats() {
+        try {
+            // Obtener datos de calles
+            val streetNumbers = StreetDelayCalculator.getNumbers()
+            val streetDelays = StreetDelayCalculator.getDelays()
+            val streetUsedPositions = StreetDelayCalculator.getUsedPositions()
+            
+            // Obtener datos de series
+            val seriesNumbers = SeriesDelayCalculator.getNumbers()
+            val seriesDelays = SeriesDelayCalculator.getDelays()
+            val seriesUsedPositions = SeriesDelayCalculator.getUsedPositions()
+            
+            Log.d(TAG, "Guardando estado calles - Números: ${streetNumbers.contentToString()}")
+            Log.d(TAG, "Guardando estado calles - Atrasos: ${streetDelays.contentToString()}")
+            Log.d(TAG, "Guardando estado calles - Posiciones usadas: $streetUsedPositions")
+            Log.d(TAG, "Guardando estado series - Números: ${seriesNumbers.contentToString()}")
+            Log.d(TAG, "Guardando estado series - Atrasos: ${seriesDelays.contentToString()}")
+            Log.d(TAG, "Guardando estado series - Posiciones usadas: $seriesUsedPositions")
+
+            // Crear lista combinada de DelayStats
+            val delayStats = mutableListOf<DelayStats>()
+            
+            // Agregar stats de calles solo si hay posiciones usadas
+            if (streetUsedPositions > 0) {
+                for (i in 0 until streetUsedPositions) {
+                    delayStats.add(DelayStats(
+                        position = i,
+                        number = streetNumbers[i],
+                        delay = streetDelays[i],
+                        type = "street"
+                    ))
+                }
             }
-            else -> {
-                // Rojo con texto blanco
-                indicator.setBackgroundColor(android.graphics.Color.RED)
-                indicator.setTextColor(android.graphics.Color.WHITE)
+            
+            // Agregar stats de series solo si hay posiciones usadas
+            if (seriesUsedPositions > 0) {
+                for (i in 0 until seriesUsedPositions) {
+                    delayStats.add(DelayStats(
+                        position = i,
+                        number = seriesNumbers[i],
+                        delay = seriesDelays[i],
+                        type = "series"
+                    ))
+                }
+            }
+            
+            Log.d(TAG, "Total de DelayStats a guardar: ${delayStats.size}")
+            
+            if (delayStats.isNotEmpty()) {
+                viewModel.updateDelayStats(delayStats)
+            } else {
+                Log.d(TAG, "No hay stats para guardar, saltando actualización")
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "Error al guardar DelayStats", e)
+            // No dejamos que el error se propague
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        saveIndicatorsState()
+    }
+
+    private fun saveIndicatorsState() {
+        val prefs = requireContext().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+        val editor = prefs.edit()
+
+        // Guardar los valores de los indicadores
+        val indicators = listOf(stat1, stat2, stat3, stat4, stat5, stat6, stat7, stat8)
+        indicators.forEachIndexed { index, textView ->
+            val value = textView.text.toString()
+            if (value != getString(R.string.empty_stat)) {
+                editor.putString("indicator_$index", value)
+                editor.putInt("indicator_${index}_bg", textView.backgroundTintList?.defaultColor ?: android.graphics.Color.WHITE)
+                editor.putInt("indicator_${index}_text", textView.currentTextColor)
+            }
+        }
+        editor.apply()
+        Log.d(TAG, "Estado de indicadores guardado en SharedPreferences")
+    }
+
+    private fun loadSavedIndicators() {
+        try {
+            val prefs = requireContext().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+            
+            // Cargar los indicadores
+            val indicators = listOf(stat1, stat2, stat3, stat4, stat5, stat6, stat7, stat8)
+            indicators.forEachIndexed { index, textView ->
+                try {
+                    val savedValue = prefs.getString("indicator_$index", null)
+                    if (savedValue != null) {
+                        textView.text = savedValue
+                        val bgColor = prefs.getInt("indicator_${index}_bg", android.graphics.Color.WHITE)
+                        textView.setBackgroundColor(bgColor)
+                        val textColor = prefs.getInt("indicator_${index}_text", android.graphics.Color.BLACK)
+                        textView.setTextColor(textColor)
+                        Log.d(TAG, "Indicador $index restaurado: valor=$savedValue, bg=$bgColor, text=$textColor")
+                    } else {
+                        textView.text = getString(R.string.empty_stat)
+                        textView.setBackgroundColor(android.graphics.Color.WHITE)
+                        textView.setTextColor(android.graphics.Color.BLACK)
+                        Log.d(TAG, "Indicador $index no tenía valor guardado, usando valores por defecto")
+                    }
+                } catch (e: Exception) {
+                    Log.e(TAG, "Error al restaurar indicador $index", e)
+                    textView.text = getString(R.string.empty_stat)
+                    textView.setBackgroundColor(android.graphics.Color.WHITE)
+                    textView.setTextColor(android.graphics.Color.BLACK)
+                }
+            }
+            Log.d(TAG, "Carga de indicadores completada")
+        } catch (e: Exception) {
+            Log.e(TAG, "Error al cargar indicadores", e)
+            // Si falla la carga, resetear todo
+            val indicators = listOf(stat1, stat2, stat3, stat4, stat5, stat6, stat7, stat8)
+            indicators.forEach { 
+                it.text = getString(R.string.empty_stat)
+                it.setBackgroundColor(android.graphics.Color.WHITE)
+                it.setTextColor(android.graphics.Color.BLACK)
             }
         }
     }
@@ -411,182 +663,6 @@ class InputFragment : Fragment() {
             viewLifecycleOwner.lifecycleScope.launch {
                 viewModel.insert(number)
                 numberInput.setText("")
-            }
-        }
-    }
-
-    private fun updateStatistics(numbers: List<RouletteNumber>) {
-        Log.d(TAG, "Actualizando estadísticas con ${numbers.size} números")
-        
-        // Si no hay números, reiniciamos los atrasos y mostramos guiones
-        if (numbers.isEmpty()) {
-            Log.d(TAG, "No hay números, reseteando todo")
-            StreetDelayCalculator.resetDelays()
-            SeriesDelayCalculator.resetDelays()
-            
-            val allIndicators = listOf(stat1, stat2, stat3, stat4, stat5, stat6, stat7, stat8)
-            allIndicators.forEach { 
-                it.text = getString(R.string.empty_stat)
-                it.setBackgroundColor(android.graphics.Color.WHITE)
-                it.setTextColor(android.graphics.Color.BLACK)
-            }
-            
-            // No guardamos el estado cuando no hay números
-            return
-        }
-
-        try {
-            // Calcular atrasos de calles
-            val streetDelays = StreetDelayCalculator.calculate(numbers)
-            // Calcular atrasos de series
-            val seriesDelays = SeriesDelayCalculator.calculate(numbers)
-            
-            Log.d(TAG, "Atrasos de calles calculados: $streetDelays")
-            Log.d(TAG, "Atrasos de series calculados: $seriesDelays")
-            
-            // Actualizamos los indicadores con los nuevos atrasos
-            updateIndicators(streetDelays, seriesDelays)
-
-            // Guardar el estado actual
-            saveDelayStats()
-        } catch (e: Exception) {
-            Log.e(TAG, "Error al actualizar estadísticas", e)
-            // No dejamos que el error se propague
-        }
-    }
-
-    private fun saveDelayStats() {
-        try {
-            // Obtener datos de calles
-            val streetNumbers = StreetDelayCalculator.getNumbers()
-            val streetDelays = StreetDelayCalculator.getDelays()
-            val streetUsedPositions = StreetDelayCalculator.getUsedPositions()
-            
-            // Obtener datos de series
-            val seriesNumbers = SeriesDelayCalculator.getNumbers()
-            val seriesDelays = SeriesDelayCalculator.getDelays()
-            val seriesUsedPositions = SeriesDelayCalculator.getUsedPositions()
-            
-            Log.d(TAG, "Guardando estado calles - Números: ${streetNumbers.contentToString()}")
-            Log.d(TAG, "Guardando estado calles - Atrasos: ${streetDelays.contentToString()}")
-            Log.d(TAG, "Guardando estado calles - Posiciones usadas: $streetUsedPositions")
-            Log.d(TAG, "Guardando estado series - Números: ${seriesNumbers.contentToString()}")
-            Log.d(TAG, "Guardando estado series - Atrasos: ${seriesDelays.contentToString()}")
-            Log.d(TAG, "Guardando estado series - Posiciones usadas: $seriesUsedPositions")
-
-            // Crear lista combinada de DelayStats
-            val delayStats = mutableListOf<DelayStats>()
-            
-            // Agregar stats de calles solo si hay posiciones usadas
-            if (streetUsedPositions > 0) {
-                for (i in 0 until streetUsedPositions) {
-                    delayStats.add(DelayStats(
-                        position = i,
-                        number = streetNumbers[i],
-                        delay = streetDelays[i],
-                        type = "street"
-                    ))
-                }
-            }
-            
-            // Agregar stats de series solo si hay posiciones usadas
-            if (seriesUsedPositions > 0) {
-                for (i in 0 until seriesUsedPositions) {
-                    delayStats.add(DelayStats(
-                        position = i,
-                        number = seriesNumbers[i],
-                        delay = seriesDelays[i],
-                        type = "series"
-                    ))
-                }
-            }
-            
-            Log.d(TAG, "Total de DelayStats a guardar: ${delayStats.size}")
-            
-            if (delayStats.isNotEmpty()) {
-                viewModel.updateDelayStats(delayStats)
-            } else {
-                Log.d(TAG, "No hay stats para guardar, saltando actualización")
-            }
-        } catch (e: Exception) {
-            Log.e(TAG, "Error al guardar DelayStats", e)
-            // No dejamos que el error se propague
-        }
-    }
-
-    override fun onPause() {
-        super.onPause()
-        saveIndicatorsState() // Guardar estado al salir
-    }
-
-    private fun saveIndicatorsState() {
-        val prefs = requireContext().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
-        val editor = prefs.edit()
-
-        // Guardar los valores de los indicadores
-        val indicators = listOf(stat1, stat2, stat3, stat4, stat5, stat6, stat7, stat8)
-        indicators.forEachIndexed { index, textView ->
-            val value = textView.text.toString()
-            if (value != getString(R.string.empty_stat)) {
-                editor.putString("indicator_$index", value)
-                
-                // Guardar el color de fondo
-                editor.putInt("indicator_${index}_bg", textView.backgroundTintList?.defaultColor ?: android.graphics.Color.WHITE)
-                
-                // Guardar el color del texto
-                editor.putInt("indicator_${index}_text", textView.currentTextColor)
-            }
-        }
-        editor.apply()
-        Log.d(TAG, "Estado de indicadores guardado en SharedPreferences")
-    }
-
-    private fun loadSavedIndicators() {
-        try {
-            val prefs = requireContext().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
-            val indicators = listOf(stat1, stat2, stat3, stat4, stat5, stat6, stat7, stat8)
-            
-            Log.d(TAG, "Iniciando carga de indicadores guardados")
-            
-            // Cargar los valores guardados
-            indicators.forEachIndexed { index, textView ->
-                try {
-                    val savedValue = prefs.getString("indicator_$index", null)
-                    if (savedValue != null) {
-                        textView.text = savedValue
-                        
-                        // Restaurar color de fondo
-                        val bgColor = prefs.getInt("indicator_${index}_bg", android.graphics.Color.WHITE)
-                        textView.setBackgroundColor(bgColor)
-                        
-                        // Restaurar color del texto
-                        val textColor = prefs.getInt("indicator_${index}_text", android.graphics.Color.BLACK)
-                        textView.setTextColor(textColor)
-                        
-                        Log.d(TAG, "Indicador $index restaurado: valor=$savedValue, bg=$bgColor, text=$textColor")
-                    } else {
-                        textView.text = getString(R.string.empty_stat)
-                        textView.setBackgroundColor(android.graphics.Color.WHITE)
-                        textView.setTextColor(android.graphics.Color.BLACK)
-                        Log.d(TAG, "Indicador $index no tenía valor guardado, usando valores por defecto")
-                    }
-                } catch (e: Exception) {
-                    Log.e(TAG, "Error al restaurar indicador $index", e)
-                    // Si falla un indicador, lo reseteamos a valores por defecto
-                    textView.text = getString(R.string.empty_stat)
-                    textView.setBackgroundColor(android.graphics.Color.WHITE)
-                    textView.setTextColor(android.graphics.Color.BLACK)
-                }
-            }
-            Log.d(TAG, "Carga de indicadores completada")
-        } catch (e: Exception) {
-            Log.e(TAG, "Error al cargar indicadores", e)
-            // Si falla todo, reseteamos todos los indicadores
-            val indicators = listOf(stat1, stat2, stat3, stat4, stat5, stat6, stat7, stat8)
-            indicators.forEach { 
-                it.text = getString(R.string.empty_stat)
-                it.setBackgroundColor(android.graphics.Color.WHITE)
-                it.setTextColor(android.graphics.Color.BLACK)
             }
         }
     }
