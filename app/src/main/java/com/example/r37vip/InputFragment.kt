@@ -229,11 +229,15 @@ class InputFragment : Fragment() {
         lastNumber3.text = "-"
         lastNumber4.text = "-"
 
-        // Resetear los contadores
+        // Resetear los contadores y sus colores
         counter4.text = "0"
+        updateCounterColor(counter4, 0)
         counter3.text = "0"
+        updateCounterColor(counter3, 0)
         counter2.text = "0"
+        updateCounterColor(counter2, 0)
         counter1.text = "0"
+        updateCounterColor(counter1, 0)
 
         // Resetear los calculadores del ViewModel
         viewModel.resetCalculators()
@@ -401,6 +405,39 @@ class InputFragment : Fragment() {
         updateIndicators(allDelays)
     }
 
+    private fun updateCounterColor(textView: TextView, value: Int) {
+        when {
+            value == 1 -> {
+                textView.setBackgroundColor(android.graphics.Color.LTGRAY)  // Gris
+                textView.setTextColor(android.graphics.Color.BLACK)
+            }
+            value in 2..3 -> {
+                textView.setBackgroundColor(android.graphics.Color.YELLOW)  // Amarillo
+                textView.setTextColor(android.graphics.Color.BLACK)
+            }
+            value in 4..5 -> {
+                textView.setBackgroundColor(android.graphics.Color.rgb(255, 165, 0))  // Naranja
+                textView.setTextColor(android.graphics.Color.BLACK)
+            }
+            value in 6..7 -> {
+                textView.setBackgroundColor(android.graphics.Color.RED)  // Rojo
+                textView.setTextColor(android.graphics.Color.WHITE)
+            }
+            value in 8..10 -> {
+                textView.setBackgroundColor(android.graphics.Color.RED)  // Rojo más intenso
+                textView.setTextColor(android.graphics.Color.WHITE)
+            }
+            value >= 11 -> {
+                textView.setBackgroundColor(android.graphics.Color.rgb(0, 0, 128))  // Azul marino
+                textView.setTextColor(android.graphics.Color.WHITE)
+            }
+            else -> {  // value == 0
+                textView.setBackgroundColor(android.graphics.Color.LTGRAY)  // Gris
+                textView.setTextColor(android.graphics.Color.BLACK)
+            }
+        }
+    }
+
     private fun updateStatistics(numbers: List<RouletteNumber>) {
         if (numbers.isEmpty()) {
             Log.d(TAG, "No hay números, reseteando todo")
@@ -424,12 +461,16 @@ class InputFragment : Fragment() {
             // Actualizar los indicadores con los nuevos atrasos
             updateIndicatorsFromDelays(currentStreetDelays, seriesDelays)
 
-            // Actualizar los contadores
+            // Actualizar los contadores y sus colores
             val counters = StreetDelayCalculator.getCounters()
             counter4.text = counters[0].toString()
+            updateCounterColor(counter4, counters[0])
             counter3.text = counters[1].toString()
+            updateCounterColor(counter3, counters[1])
             counter2.text = counters[2].toString()
+            updateCounterColor(counter2, counters[2])
             counter1.text = counters[3].toString()
+            updateCounterColor(counter1, counters[3])
 
             // Guardar el estado actual
             saveDelayStats()

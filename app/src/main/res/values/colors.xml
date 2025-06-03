@@ -7,4 +7,11 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    
+    <!-- Colores para la escala de valores -->
+    <color name="counter_gray">#CCCCCC</color>
+    <color name="counter_yellow">#FFFF00</color>
+    <color name="counter_orange">#FFA500</color>
+    <color name="counter_red">#FF0000</color>
+    <color name="counter_navy">#000080</color>
 </resources>

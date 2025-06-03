@@ -332,7 +332,7 @@
             android:layout_margin="2dp"
             app:cardCornerRadius="4dp"
             app:cardElevation="1dp"
-            app:cardBackgroundColor="@android:color/holo_blue_light">
+            app:cardBackgroundColor="#1A237E">
 
             <TextView
                 android:id="@+id/counter1"
@@ -352,7 +352,7 @@
             android:layout_margin="2dp"
             app:cardCornerRadius="4dp"
             app:cardElevation="1dp"
-            app:cardBackgroundColor="@android:color/holo_blue_light">
+            app:cardBackgroundColor="#1A237E">
 
             <TextView
                 android:id="@+id/counter2"
@@ -372,7 +372,7 @@
             android:layout_margin="2dp"
             app:cardCornerRadius="4dp"
             app:cardElevation="1dp"
-            app:cardBackgroundColor="@android:color/holo_blue_light">
+            app:cardBackgroundColor="#1A237E">
 
             <TextView
                 android:id="@+id/counter3"
@@ -392,7 +392,7 @@
             android:layout_margin="2dp"
             app:cardCornerRadius="4dp"
             app:cardElevation="1dp"
-            app:cardBackgroundColor="@android:color/holo_blue_light">
+            app:cardBackgroundColor="#1A237E">
 
             <TextView
                 android:id="@+id/counter4"
