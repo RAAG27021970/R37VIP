@@ -10,6 +10,8 @@ object StreetDelayCalculator {
     private val numbers = IntArray(4) { -1 }
     // Array para los atrasos de cada casillero
     private val delays = IntArray(4) { 0 }
+    // Array para las progresiones, relacionado con delays
+    private val progresions = IntArray(8) { 0 }
     // Array para contar cuántas veces cada posición llega a cero
     private val counters = IntArray(8) { 0 }
     private var usedPositions = 0
@@ -23,6 +25,40 @@ object StreetDelayCalculator {
     }
 
     /**
+     * Convierte un valor de delay a su correspondiente valor de progresión
+     */
+    private fun delayToProgresion(delay: Int): Int {
+        return when (delay) {
+            in 1..4 -> 1
+            in 5..9 -> 2
+            in 10..13 -> 3
+            in 14..16 -> 4
+            17, 18 -> 5
+            19, 20 -> 6
+            21, 22 -> 7
+            23 -> 8
+            24 -> 9
+            25 -> 10
+            26 -> 11
+            27 -> 12
+            28 -> 13
+            29 -> 14
+            30 -> 15
+            31 -> 17
+            32 -> 18
+            33 -> 20
+            34 -> 22
+            35 -> 24
+            36 -> 26
+            37 -> 28
+            38 -> 30
+            39 -> 32
+            40 -> 24
+            else -> 0  // Para cualquier otro valor no especificado
+        }
+    }
+
+    /**
      * Reinicia todos los atrasos a 0 y números a -1
      */
     fun resetDelays() {
@@ -30,9 +66,10 @@ object StreetDelayCalculator {
             numbers[i] = -1  // Volvemos a "a"
             delays[i] = 0
         }
-        // Resetear los contadores también
+        // Resetear los contadores y progresiones también
         for (i in counters.indices) {
             counters[i] = 0
+            progresions[i] = 0
         }
         usedPositions = 0
     }
@@ -84,6 +121,11 @@ object StreetDelayCalculator {
         // Incrementamos la cantidad de posiciones usadas
         if (usedPositions < 4) usedPositions++
 
+        // Actualizamos las progresiones basadas en los delays
+        for (i in delays.indices) {
+            progresions[i] = delayToProgresion(delays[i])
+        }
+
         return delays.take(4).toList()
     }
 
@@ -99,6 +141,8 @@ object StreetDelayCalculator {
     fun getDelays(): IntArray = delays.clone()
 
     fun getCounters(): IntArray = counters.clone()
+
+    fun getProgresions(): IntArray = progresions.clone()
 
     fun getUsedPositions(): Int = usedPositions
 

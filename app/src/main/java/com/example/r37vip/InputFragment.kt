@@ -46,6 +46,12 @@ class InputFragment : Fragment() {
     private lateinit var counter3: TextView
     private lateinit var counter4: TextView
 
+    // Progresiones
+    private lateinit var progresion1: TextView
+    private lateinit var progresion2: TextView
+    private lateinit var progresion3: TextView
+    private lateinit var progresion4: TextView
+
     private val viewModel: RouletteViewModel by viewModels()
 
     override fun onCreateView(
@@ -88,6 +94,12 @@ class InputFragment : Fragment() {
                 counter2 = view.findViewById(R.id.counter2)
                 counter3 = view.findViewById(R.id.counter3)
                 counter4 = view.findViewById(R.id.counter4)
+
+                // Initialize progresions
+                progresion1 = view.findViewById(R.id.progresion1)
+                progresion2 = view.findViewById(R.id.progresion2)
+                progresion3 = view.findViewById(R.id.progresion3)
+                progresion4 = view.findViewById(R.id.progresion4)
                 
                 Log.d(TAG, "Views inicializadas correctamente")
             } catch (e: Exception) {
@@ -238,6 +250,16 @@ class InputFragment : Fragment() {
         updateCounterColor(counter2, 0)
         counter1.text = "0"
         updateCounterColor(counter1, 0)
+
+        // Resetear las progresiones (de 4 a 1)
+        progresion4.text = "0"
+        updateProgresionColor(progresion4, 0)
+        progresion3.text = "0"
+        updateProgresionColor(progresion3, 0)
+        progresion2.text = "0"
+        updateProgresionColor(progresion2, 0)
+        progresion1.text = "0"
+        updateProgresionColor(progresion1, 0)
 
         // Resetear los calculadores del ViewModel
         viewModel.resetCalculators()
@@ -438,6 +460,55 @@ class InputFragment : Fragment() {
         }
     }
 
+    private fun updateProgresionColor(textView: TextView, value: Int) {
+        when {
+            value in 1..4 -> {
+                // Verde oscuro
+                textView.setBackgroundColor(android.graphics.Color.rgb(76, 175, 80))
+                textView.setTextColor(android.graphics.Color.WHITE)
+            }
+            value in 5..9 -> {
+                // Verde medio
+                textView.setBackgroundColor(android.graphics.Color.rgb(129, 199, 132))
+                textView.setTextColor(android.graphics.Color.BLACK)
+            }
+            value in 10..13 -> {
+                // Verde claro
+                textView.setBackgroundColor(android.graphics.Color.rgb(165, 214, 167))
+                textView.setTextColor(android.graphics.Color.BLACK)
+            }
+            value in 14..16 -> {
+                // Verde muy claro
+                textView.setBackgroundColor(android.graphics.Color.rgb(200, 230, 201))
+                textView.setTextColor(android.graphics.Color.BLACK)
+            }
+            value in 17..18 -> {
+                // Amarillo
+                textView.setBackgroundColor(android.graphics.Color.rgb(255, 235, 59))
+                textView.setTextColor(android.graphics.Color.BLACK)
+            }
+            value in 19..20 -> {
+                // Naranja
+                textView.setBackgroundColor(android.graphics.Color.rgb(255, 152, 0))
+                textView.setTextColor(android.graphics.Color.WHITE)
+            }
+            value in 21..22 -> {
+                // Rojo claro
+                textView.setBackgroundColor(android.graphics.Color.rgb(244, 67, 54))
+                textView.setTextColor(android.graphics.Color.WHITE)
+            }
+            value >= 23 -> {
+                // Rojo intenso
+                textView.setBackgroundColor(android.graphics.Color.rgb(198, 40, 40))
+                textView.setTextColor(android.graphics.Color.WHITE)
+            }
+            else -> {  // value == 0
+                textView.setBackgroundColor(android.graphics.Color.LTGRAY)
+                textView.setTextColor(android.graphics.Color.BLACK)
+            }
+        }
+    }
+
     private fun updateStatistics(numbers: List<RouletteNumber>) {
         if (numbers.isEmpty()) {
             Log.d(TAG, "No hay números, reseteando todo")
@@ -472,10 +543,21 @@ class InputFragment : Fragment() {
             counter1.text = counters[3].toString()
             updateCounterColor(counter1, counters[3])
 
+            // Actualizar las progresiones
+            val progresions = StreetDelayCalculator.getProgresions()
+            progresion1.text = progresions[3].toString()  // Posición 1 muestra índice 3
+            updateProgresionColor(progresion1, progresions[3])
+            progresion2.text = progresions[2].toString()  // Posición 2 muestra índice 2
+            updateProgresionColor(progresion2, progresions[2])
+            progresion3.text = progresions[1].toString()  // Posición 3 muestra índice 1
+            updateProgresionColor(progresion3, progresions[1])
+            progresion4.text = progresions[0].toString()  // Posición 4 muestra índice 0
+            updateProgresionColor(progresion4, progresions[0])
+
             // Guardar el estado actual
             saveDelayStats()
         } catch (e: Exception) {
-            Log.e(TAG, "Error al actualizar estadísticas", e)
+            Log.e(TAG, "Error actualizando estadísticas", e)
         }
     }
 
