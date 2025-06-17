@@ -39,6 +39,12 @@ class InputFragment : Fragment() {
     private lateinit var lastNumber2: TextView
     private lateinit var lastNumber3: TextView
     private lateinit var lastNumber4: TextView
+    private lateinit var lastNumber5: TextView
+    private lateinit var lastNumber6: TextView
+    private lateinit var lastNumber7: TextView
+    private lateinit var lastNumber8: TextView
+    private lateinit var lastNumber9: TextView
+    private lateinit var lastNumber10: TextView
 
     // Contadores
     private lateinit var counter1: TextView
@@ -88,6 +94,12 @@ class InputFragment : Fragment() {
                 lastNumber2 = view.findViewById(R.id.lastNumber2)
                 lastNumber3 = view.findViewById(R.id.lastNumber3)
                 lastNumber4 = view.findViewById(R.id.lastNumber4)
+                lastNumber5 = view.findViewById(R.id.lastNumber5)
+                lastNumber6 = view.findViewById(R.id.lastNumber6)
+                lastNumber7 = view.findViewById(R.id.lastNumber7)
+                lastNumber8 = view.findViewById(R.id.lastNumber8)
+                lastNumber9 = view.findViewById(R.id.lastNumber9)
+                lastNumber10 = view.findViewById(R.id.lastNumber10)
 
                 // Initialize counters
                 counter1 = view.findViewById(R.id.counter1)
@@ -191,31 +203,48 @@ class InputFragment : Fragment() {
         }
     }
 
+    private fun setNumberColor(textView: TextView, number: Int) {
+        when (number) {
+            0 -> {
+                textView.setBackgroundColor(android.graphics.Color.BLACK)
+                textView.setTextColor(android.graphics.Color.WHITE)
+            }
+            1, 4, 7, 10, 13, 16, 19, 22, 25, 28, 31, 34 -> {
+                textView.setBackgroundColor(android.graphics.Color.rgb(0, 200, 83)) // Verde
+                textView.setTextColor(android.graphics.Color.BLACK)
+            }
+            2, 5, 8, 11, 14, 17, 20, 23, 26, 29, 32, 35 -> {
+                textView.setBackgroundColor(android.graphics.Color.YELLOW) // Amarillo
+                textView.setTextColor(android.graphics.Color.BLACK)
+            }
+            3, 6, 9, 12, 15, 18, 21, 24, 27, 30, 33, 36 -> {
+                textView.setBackgroundColor(android.graphics.Color.RED)
+                textView.setTextColor(android.graphics.Color.WHITE)
+            }
+            else -> {
+                textView.setBackgroundColor(android.graphics.Color.WHITE)
+                textView.setTextColor(android.graphics.Color.BLACK)
+            }
+        }
+    }
+
     private fun updateLastNumbers(numbers: List<RouletteNumber>) {
         try {
-            // Limpiar todos los números primero
-            lastNumber1.text = "-"
-            lastNumber2.text = "-"
-            lastNumber3.text = "-"
-            lastNumber4.text = "-"
+            // Resetear los últimos números y sus colores
+            val lastNumberViews = listOf(
+                lastNumber1, lastNumber2, lastNumber3, lastNumber4, lastNumber5,
+                lastNumber6, lastNumber7, lastNumber8, lastNumber9, lastNumber10
+            )
+            lastNumberViews.forEach {
+                it.text = "-"
+                it.setBackgroundColor(android.graphics.Color.WHITE)
+                it.setTextColor(android.graphics.Color.BLACK)
+            }
             
-            if (numbers.size >= 4) {
-                // Tomamos los últimos 4 números en orden cronológico (del más antiguo al más reciente)
-                val lastFour = numbers.takeLast(4)
-                lastNumber1.text = lastFour[0].number.toString() // El más antiguo
-                lastNumber2.text = lastFour[1].number.toString()
-                lastNumber3.text = lastFour[2].number.toString()
-                lastNumber4.text = lastFour[3].number.toString() // El más reciente
-            } else {
-                // Si hay menos de 4 números, mostramos los que haya
-                numbers.takeLast(4).forEachIndexed { index, number ->
-                    when (index) {
-                        0 -> lastNumber1.text = number.number.toString()
-                        1 -> lastNumber2.text = number.number.toString()
-                        2 -> lastNumber3.text = number.number.toString()
-                        3 -> lastNumber4.text = number.number.toString()
-                    }
-                }
+            val lastTen = numbers.takeLast(10)
+            lastTen.forEachIndexed { index, rouletteNumber ->
+                lastNumberViews[index].text = rouletteNumber.number.toString()
+                setNumberColor(lastNumberViews[index], rouletteNumber.number)
             }
         } catch (e: Exception) {
             Log.e(TAG, "Error actualizando últimos números", e)
@@ -236,10 +265,15 @@ class InputFragment : Fragment() {
         }
         
         // Resetear los últimos números
-        lastNumber1.text = "-"
-        lastNumber2.text = "-"
-        lastNumber3.text = "-"
-        lastNumber4.text = "-"
+        val lastNumberViews = listOf(
+            lastNumber1, lastNumber2, lastNumber3, lastNumber4, lastNumber5,
+            lastNumber6, lastNumber7, lastNumber8, lastNumber9, lastNumber10
+        )
+        lastNumberViews.forEach {
+            it.text = "-"
+            it.setBackgroundColor(android.graphics.Color.WHITE)
+            it.setTextColor(android.graphics.Color.BLACK)
+        }
 
         // Resetear los contadores y sus colores
         counter4.text = "0"
