@@ -29,6 +29,8 @@ class MainActivity : AppCompatActivity() {
             tab.text = when (position) {
                 0 -> "Input"
                 1 -> "History Grid"
+                2 -> "Table"
+                3 -> "PLATE"
                 else -> null
             }
         }.attach()
@@ -36,11 +38,13 @@ class MainActivity : AppCompatActivity() {
 }
 
 private class ViewPagerAdapter(fragmentActivity: FragmentActivity) : FragmentStateAdapter(fragmentActivity) {
-    override fun getItemCount(): Int = 2
+    override fun getItemCount(): Int = 4
 
     override fun createFragment(position: Int): Fragment = when (position) {
         0 -> InputFragment.newInstance()
         1 -> HistoryGridFragment.newInstance()
+        2 -> TableFragment.newInstance()
+        3 -> PlateFragment.newInstance()
         else -> throw IllegalArgumentException("Invalid position $position")
     }
 }
