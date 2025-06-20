@@ -286,7 +286,7 @@ class InputFragment : Fragment() {
                 }
             }
 
-            // Para la lógica de los contadores, usamos los últimos 11 números
+            // Para la lógica de los contadores, usamos los últimos 11 números (el actual + 10 anteriores)
             val lastElevenForLogic = numbers.takeLast(11)
             updateColumnCounters(lastElevenForLogic.map { it.number })
             
@@ -296,84 +296,79 @@ class InputFragment : Fragment() {
     }
 
     private fun updateColumnCounters(numbers: List<Int>) {
-        try {
-            // Obtener valores anteriores de los contadores
-            val previousCount1 = column1Counter.text.toString().toIntOrNull() ?: 0
-            val previousCount2 = column2Counter.text.toString().toIntOrNull() ?: 0
-            val previousCount3 = column3Counter.text.toString().toIntOrNull() ?: 0
-            
-            // Columna 1
-            val col1Numbers = numbers.filter { isInColumn1(it) }
-            val count1 = calculateCountAfterLastRepetition(col1Numbers)
-            column1Counter.text = count1.toString()
-            updateCounterColor(column1Counter, count1)
+        val newNumber = numbers.lastOrNull() ?: return // Salir si no hay números
 
-            // Columna 2
-            val col2Numbers = numbers.filter { isInColumn2(it) }
-            val count2 = calculateCountAfterLastRepetition(col2Numbers)
-            column2Counter.text = count2.toString()
-            updateCounterColor(column2Counter, count2)
-
-            // Columna 3
-            val col3Numbers = numbers.filter { isInColumn3(it) }
-            val count3 = calculateCountAfterLastRepetition(col3Numbers)
-            column3Counter.text = count3.toString()
-            updateCounterColor(column3Counter, count3)
-
-            // Detectar repeticiones y actualizar contadores secundarios
-            updateSecondaryCounters(col1Numbers, col2Numbers, col3Numbers)
-
-            Log.d("Contadores", "Cinta: $numbers -> Col1: $count1, Col2: $count2, Col3: $count3")
-
-        } catch (e: Exception) {
-            Log.e(TAG, "Error actualizando contadores de columnas", e)
-        }
-    }
-
-    private fun updateSecondaryCounters(col1Numbers: List<Int>, col2Numbers: List<Int>, col3Numbers: List<Int>) {
-        try {
-            // Obtener valores actuales de los contadores secundarios
-            val currentValue1 = column1Counter2.text.toString().toIntOrNull() ?: 0
-            val currentValue2 = column2Counter2.text.toString().toIntOrNull() ?: 0
-            val currentValue3 = column3Counter2.text.toString().toIntOrNull() ?: 0
+        // --- Lógica para Columna 1 ---
+        if (isInColumn1(newNumber)) {
+            val colNumbers = numbers.filter { isInColumn1(it) }
+            val isRepetition = colNumbers.dropLast(1).contains(newNumber)
             
-            // Detectar si hay una nueva repetición en cada columna
-            val hasNewRepetition1 = detectNewRepetition(col1Numbers)
-            val hasNewRepetition2 = detectNewRepetition(col2Numbers)
-            val hasNewRepetition3 = detectNewRepetition(col3Numbers)
-            
-            // Actualizar contadores secundarios solo si hay nueva repetición
-            val newValue1 = if (hasNewRepetition1) currentValue1 + 1 else currentValue1
-            val newValue2 = if (hasNewRepetition2) currentValue2 + 1 else currentValue2
-            val newValue3 = if (hasNewRepetition3) currentValue3 + 1 else currentValue3
-            
-            column1Counter2.text = newValue1.toString()
-            column2Counter2.text = newValue2.toString()
-            column3Counter2.text = newValue3.toString()
-            
-            // Aplicar colores a los contadores secundarios
-            updateCounterColor(column1Counter2, newValue1)
-            updateCounterColor(column2Counter2, newValue2)
-            updateCounterColor(column3Counter2, newValue3)
-            
-            if (hasNewRepetition1 || hasNewRepetition2 || hasNewRepetition3) {
-                Log.d("Contadores", "Nueva repetición detectada - Col1: $hasNewRepetition1, Col2: $hasNewRepetition2, Col3: $hasNewRepetition3")
-                Log.d("Contadores", "Contadores secundarios actualizados - COL1_2: $newValue1, COL2_2: $newValue2, COL3_2: $newValue3")
+            if (isRepetition) {
+                // Poner contador principal en 0
+                column1Counter.text = "0"
+                updateCounterColor(column1Counter, 0)
+                
+                // Incrementar contador de eventos
+                val prevEventCount = column1Counter2.text.toString().toIntOrNull() ?: 0
+                val newEventCount = prevEventCount + 1
+                column1Counter2.text = newEventCount.toString()
+                updateCounterColor(column1Counter2, newEventCount)
+            } else {
+                // Incrementar contador principal
+                val prevCount = column1Counter.text.toString().toIntOrNull() ?: 0
+                val newCount = prevCount + 1
+                column1Counter.text = newCount.toString()
+                updateCounterColor(column1Counter, newCount)
             }
-            
-        } catch (e: Exception) {
-            Log.e(TAG, "Error actualizando contadores secundarios", e)
         }
-    }
 
-    private fun detectNewRepetition(colNumbers: List<Int>): Boolean {
-        if (colNumbers.size < 2) return false
-        
-        // Verificar si el último número ya apareció antes en la secuencia
-        val lastNumber = colNumbers.last()
-        val previousNumbers = colNumbers.dropLast(1)
-        
-        return lastNumber in previousNumbers
+        // --- Lógica para Columna 2 ---
+        if (isInColumn2(newNumber)) {
+            val colNumbers = numbers.filter { isInColumn2(it) }
+            val isRepetition = colNumbers.dropLast(1).contains(newNumber)
+
+            if (isRepetition) {
+                // Poner contador principal en 0
+                column2Counter.text = "0"
+                updateCounterColor(column2Counter, 0)
+
+                // Incrementar contador de eventos
+                val prevEventCount = column2Counter2.text.toString().toIntOrNull() ?: 0
+                val newEventCount = prevEventCount + 1
+                column2Counter2.text = newEventCount.toString()
+                updateCounterColor(column2Counter2, newEventCount)
+            } else {
+                // Incrementar contador principal
+                val prevCount = column2Counter.text.toString().toIntOrNull() ?: 0
+                val newCount = prevCount + 1
+                column2Counter.text = newCount.toString()
+                updateCounterColor(column2Counter, newCount)
+            }
+        }
+
+        // --- Lógica para Columna 3 ---
+        if (isInColumn3(newNumber)) {
+            val colNumbers = numbers.filter { isInColumn3(it) }
+            val isRepetition = colNumbers.dropLast(1).contains(newNumber)
+
+            if (isRepetition) {
+                // Poner contador principal en 0
+                column3Counter.text = "0"
+                updateCounterColor(column3Counter, 0)
+
+                // Incrementar contador de eventos
+                val prevEventCount = column3Counter2.text.toString().toIntOrNull() ?: 0
+                val newEventCount = prevEventCount + 1
+                column3Counter2.text = newEventCount.toString()
+                updateCounterColor(column3Counter2, newEventCount)
+            } else {
+                // Incrementar contador principal
+                val prevCount = column3Counter.text.toString().toIntOrNull() ?: 0
+                val newCount = prevCount + 1
+                column3Counter.text = newCount.toString()
+                updateCounterColor(column3Counter, newCount)
+            }
+        }
     }
 
     private fun getColorForValue(value: Int, maxValue: Int = 20): Int {
@@ -399,32 +394,6 @@ class InputFragment : Fragment() {
         } catch (e: Exception) {
             Log.e(TAG, "Error actualizando color del contador", e)
         }
-    }
-
-    /**
-     * Calcula el tamaño de la secuencia de números únicos después de la última repetición.
-     */
-    private fun calculateCountAfterLastRepetition(colNumbers: List<Int>): Int {
-        if (colNumbers.isEmpty()) {
-            return 0
-        }
-
-        // Encuentra todos los números que aparecen más de una vez.
-        val duplicates = colNumbers.groupingBy { it }
-            .eachCount()
-            .filter { it.value > 1 }
-            .keys
-
-        // Si no hay duplicados, el contador es simplemente el total de números de esa columna.
-        if (duplicates.isEmpty()) {
-            return colNumbers.size
-        }
-
-        // Encuentra el índice de la última vez que apareció CUALQUIERA de los números duplicados.
-        val lastDuplicateIndex = colNumbers.indexOfLast { it in duplicates }
-
-        // El contador es la cantidad de elementos que hay DESPUÉS de ese índice.
-        return colNumbers.size - 1 - lastDuplicateIndex
     }
 
     private fun isInColumn1(number: Int): Boolean {
