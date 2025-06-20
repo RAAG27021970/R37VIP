@@ -1,10 +1,15 @@
 package com.example.r37vip
 
+import android.Manifest
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -15,11 +20,25 @@ import com.example.r37vip.viewmodels.RouletteViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import com.google.android.material.button.MaterialButton
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 class HistoryGridFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: GridAdapter
     private val viewModel: RouletteViewModel by viewModels()
+    private var currentGridData: List<String> = List(630) { "" }
+
+    private val locationPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestMultiplePermissions()
+    ) { permissions ->
+        val allGranted = permissions.entries.all { it.value }
+        if (allGranted) {
+            exportToExcel()
+        } else {
+            Toast.makeText(context, "Permisos de ubicación necesarios para el nombre del archivo", Toast.LENGTH_LONG).show()
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -51,11 +70,38 @@ class HistoryGridFragment : Fragment() {
             viewModel.deleteAll()
         }
 
+        // Set up export button
+        view.findViewById<MaterialButton>(R.id.btnExport).setOnClickListener {
+            checkLocationPermissionAndExport()
+        }
+
         // Observe database changes
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.allNumbers.collectLatest { numbers ->
                 updateGridWithNumbers(numbers)
             }
+        }
+    }
+
+    private fun checkLocationPermissionAndExport() {
+        val hasLocationPermission = ContextCompat.checkSelfPermission(
+            requireContext(),
+            Manifest.permission.ACCESS_FINE_LOCATION
+        ) == PackageManager.PERMISSION_GRANTED ||
+        ContextCompat.checkSelfPermission(
+            requireContext(),
+            Manifest.permission.ACCESS_COARSE_LOCATION
+        ) == PackageManager.PERMISSION_GRANTED
+
+        if (hasLocationPermission) {
+            exportToExcel()
+        } else {
+            locationPermissionLauncher.launch(
+                arrayOf(
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+                )
+            )
         }
     }
 
@@ -72,7 +118,31 @@ class HistoryGridFragment : Fragment() {
             }
         }
 
+        currentGridData = gridData
         adapter.updateData(gridData)
+    }
+
+    private fun exportToExcel() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            try {
+                withContext(Dispatchers.IO) {
+                    val file = ExcelExporter.exportToExcel(requireContext(), currentGridData)
+                    withContext(Dispatchers.Main) {
+                        if (file != null) {
+                            ExcelExporter.shareExcelFile(requireContext(), file)
+                            Toast.makeText(context, "Archivo exportado a Downloads: ${file.name}", Toast.LENGTH_LONG).show()
+                        } else {
+                            Toast.makeText(context, "Error al exportar el archivo. Revisa los logs.", Toast.LENGTH_LONG).show()
+                        }
+                    }
+                }
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(context, "Error: ${e.message}", Toast.LENGTH_LONG).show()
+                    e.printStackTrace()
+                }
+            }
+        }
     }
 
     private class GridAdapter(private var numbers: List<String>) : 

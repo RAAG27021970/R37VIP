@@ -16,8 +16,15 @@
     <string name="stat_8">Stat 8</string>
     <string name="delete_last">Borrar último</string>
     <string name="delete_all">Borrar todo</string>
+    <string name="export">Exportar CSV</string>
     <string name="number_saved">Número %d guardado</string>
     <string name="invalid_number">Ingrese un número válido (0-36)</string>
     <string name="button_zero">0</string>
     <string name="empty_stat">-</string>
+    <string name="column_counter_1">Col 1</string>
+    <string name="column_counter_2">Col 2</string>
+    <string name="column_counter_3">Col 3</string>
+    <string name="column_counter_1_2">Col 1_2</string>
+    <string name="column_counter_2_2">Col 2_2</string>
+    <string name="column_counter_3_2">Col 3_2</string>
 </resources>

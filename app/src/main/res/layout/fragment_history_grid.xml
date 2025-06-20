@@ -23,7 +23,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:layout_marginEnd="8dp"
+            android:layout_marginEnd="4dp"
             android:text="@string/delete_last"
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             app:strokeColor="@color/design_default_color_error"
@@ -34,11 +34,23 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="4dp"
             android:text="@string/delete_all"
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             app:strokeColor="@color/design_default_color_error"
             android:textColor="@color/design_default_color_error" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnExport"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="4dp"
+            android:text="@string/export"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            app:strokeColor="@color/design_default_color_primary"
+            android:textColor="@color/design_default_color_primary" />
 
     </LinearLayout>
 
