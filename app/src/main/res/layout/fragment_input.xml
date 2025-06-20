@@ -635,44 +635,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:columnCount="3"
-        android:rowCount="2"
+        android:rowCount="1"
         android:alignmentMode="alignMargins"
         android:useDefaultMargins="false"
         android:layout_marginTop="8dp"
         app:layout_constraintTop_toBottomOf="@id/progresionsContainer">
-
-        <!-- Column 1 Counter Label -->
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_columnWeight="1"
-            android:layout_margin="2dp"
-            android:text="@string/column_counter_1"
-            android:gravity="center"
-            android:textStyle="bold"
-            android:textSize="16sp"/>
-
-        <!-- Column 2 Counter Label -->
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_columnWeight="1"
-            android:layout_margin="2dp"
-            android:text="@string/column_counter_2"
-            android:gravity="center"
-            android:textStyle="bold"
-            android:textSize="16sp"/>
-
-        <!-- Column 3 Counter Label -->
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_columnWeight="1"
-            android:layout_margin="2dp"
-            android:text="@string/column_counter_3"
-            android:gravity="center"
-            android:textStyle="bold"
-            android:textSize="16sp"/>
 
         <!-- Column 1 Counter Value -->
         <TextView
@@ -762,11 +729,70 @@
 
     </GridLayout>
 
+    <!-- Bet Fichas per Number Grid -->
+    <GridLayout
+        android:id="@+id/betFichasContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:columnCount="3"
+        android:rowCount="1"
+        android:alignmentMode="alignMargins"
+        android:useDefaultMargins="false"
+        android:layout_marginTop="4dp"
+        app:layout_constraintTop_toBottomOf="@id/secondaryColumnCountersContainer">
+
+        <!-- Bet Fichas Column 1 -->
+        <TextView
+            android:id="@+id/betFichasCol1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:layout_margin="2dp"
+            android:text="0"
+            android:gravity="center"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/black"
+            android:background="@android:color/white"
+            android:padding="8dp"/>
+
+        <!-- Bet Fichas Column 2 -->
+        <TextView
+            android:id="@+id/betFichasCol2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:layout_margin="2dp"
+            android:text="0"
+            android:gravity="center"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/black"
+            android:background="@android:color/white"
+            android:padding="8dp"/>
+
+        <!-- Bet Fichas Column 3 -->
+        <TextView
+            android:id="@+id/betFichasCol3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:layout_margin="2dp"
+            android:text="0"
+            android:gravity="center"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/black"
+            android:background="@android:color/white"
+            android:padding="8dp"/>
+
+    </GridLayout>
+
     <Space
         android:id="@+id/middleSpacer"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@id/secondaryColumnCountersContainer"
+        app:layout_constraintTop_toBottomOf="@id/betFichasContainer"
         app:layout_constraintBottom_toTopOf="@id/numberInput"
         app:layout_constraintVertical_weight="1"/>
 
@@ -778,8 +804,9 @@
         android:inputType="number"
         android:maxLength="2"
         android:textAlignment="center"
-        android:textSize="24sp"
-        android:padding="16dp"
+        android:textSize="18sp"
+        android:padding="12dp"
+        android:layout_marginTop="20dp"
         android:layout_marginBottom="16dp"
         android:background="@drawable/input_background"
         app:layout_constraintBottom_toTopOf="@id/numericKeypad"/>

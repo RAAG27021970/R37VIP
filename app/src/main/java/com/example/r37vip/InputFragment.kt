@@ -23,6 +23,14 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 class InputFragment : Fragment() {
+    
+    // Clase de datos para almacenar información de apuestas
+    data class BetInfo(
+        val columnCount: Int,        // Cantidad de números distintos en la columna
+        val betAmount: Int,          // Apuesta calculada en fichas
+        val totalBetAccumulated: Int // Acumulado total de apuestas hasta el momento
+    )
+    
     private lateinit var numberInput: EditText
     private lateinit var numericKeypad: GridLayout
     private lateinit var stat1: TextView
@@ -62,11 +70,21 @@ class InputFragment : Fragment() {
     private lateinit var column2Counter2: TextView
     private lateinit var column3Counter2: TextView
 
+    // Fichas por número de apuesta
+    private lateinit var betFichasCol1: TextView
+    private lateinit var betFichasCol2: TextView
+    private lateinit var betFichasCol3: TextView
+
     // Progresiones
     private lateinit var progresion1: TextView
     private lateinit var progresion2: TextView
     private lateinit var progresion3: TextView
     private lateinit var progresion4: TextView
+
+    // Arrays para apuestas de columnas con información completa
+    private val betCOL1 = mutableListOf<BetInfo>()
+    private val betCOL2 = mutableListOf<BetInfo>()
+    private val betCOL3 = mutableListOf<BetInfo>()
 
     private val viewModel: RouletteViewModel by viewModels()
 
@@ -127,6 +145,11 @@ class InputFragment : Fragment() {
                 column2Counter2 = view.findViewById(R.id.column2Counter2)
                 column3Counter2 = view.findViewById(R.id.column3Counter2)
 
+                // Initialize bet fichas per number
+                betFichasCol1 = view.findViewById(R.id.betFichasCol1)
+                betFichasCol2 = view.findViewById(R.id.betFichasCol2)
+                betFichasCol3 = view.findViewById(R.id.betFichasCol3)
+
                 // Initialize progresions
                 progresion1 = view.findViewById(R.id.progresion1)
                 progresion2 = view.findViewById(R.id.progresion2)
@@ -148,6 +171,14 @@ class InputFragment : Fragment() {
                 updateCounterColor(column1Counter2, 0)
                 updateCounterColor(column2Counter2, 0)
                 updateCounterColor(column3Counter2, 0)
+                
+                // Initialize bet fichas per number to zero
+                betFichasCol1.text = "0"
+                betFichasCol2.text = "0"
+                betFichasCol3.text = "0"
+                updateBetFichasColor(betFichasCol1, 0)
+                updateBetFichasColor(betFichasCol2, 0)
+                updateBetFichasColor(betFichasCol3, 0)
                 
                 Log.d(TAG, "Views inicializadas correctamente")
             } catch (e: Exception) {
@@ -313,6 +344,11 @@ class InputFragment : Fragment() {
                 val newEventCount = prevEventCount + 1
                 column1Counter2.text = newEventCount.toString()
                 updateCounterColor(column1Counter2, newEventCount)
+                
+                // Reiniciar array de apuestas COL1
+                betCOL1.clear()
+                betFichasCol1.text = "0"
+                updateBetFichasColor(betFichasCol1, 0)
             } else {
                 // Incrementar contador principal
                 val prevCount = column1Counter.text.toString().toIntOrNull() ?: 0
@@ -337,6 +373,11 @@ class InputFragment : Fragment() {
                 val newEventCount = prevEventCount + 1
                 column2Counter2.text = newEventCount.toString()
                 updateCounterColor(column2Counter2, newEventCount)
+                
+                // Reiniciar array de apuestas COL2
+                betCOL2.clear()
+                betFichasCol2.text = "0"
+                updateBetFichasColor(betFichasCol2, 0)
             } else {
                 // Incrementar contador principal
                 val prevCount = column2Counter.text.toString().toIntOrNull() ?: 0
@@ -361,6 +402,11 @@ class InputFragment : Fragment() {
                 val newEventCount = prevEventCount + 1
                 column3Counter2.text = newEventCount.toString()
                 updateCounterColor(column3Counter2, newEventCount)
+                
+                // Reiniciar array de apuestas COL3
+                betCOL3.clear()
+                betFichasCol3.text = "0"
+                updateBetFichasColor(betFichasCol3, 0)
             } else {
                 // Incrementar contador principal
                 val prevCount = column3Counter.text.toString().toIntOrNull() ?: 0
@@ -369,6 +415,9 @@ class InputFragment : Fragment() {
                 updateCounterColor(column3Counter, newCount)
             }
         }
+        
+        // Actualizar arrays de apuestas después de cambiar los contadores
+        updateBetArrays(numbers)
     }
 
     private fun getColorForValue(value: Int, maxValue: Int = 20): Int {
@@ -477,6 +526,14 @@ class InputFragment : Fragment() {
             updateCounterColor(column1Counter2, 0)
             updateCounterColor(column2Counter2, 0)
             updateCounterColor(column3Counter2, 0)
+
+            // Reset bet fichas per number
+            betFichasCol1.text = "0"
+            betFichasCol2.text = "0"
+            betFichasCol3.text = "0"
+            updateBetFichasColor(betFichasCol1, 0)
+            updateBetFichasColor(betFichasCol2, 0)
+            updateBetFichasColor(betFichasCol3, 0)
 
             // Reset progresions
             progresion1.text = getString(R.string.empty_stat)
@@ -1025,6 +1082,139 @@ class InputFragment : Fragment() {
                 numberInput.setText("")
             }
         }
+    }
+
+    /**
+     * Calcula la apuesta necesaria para ganar mínimo 18 fichas netas
+     * La apuesta se incrementa progresivamente basándose en las pérdidas acumuladas
+     * @param columnCount Cantidad de números distintos en la columna
+     * @param totalAccumulated Pérdidas acumuladas hasta el momento
+     * @return Fichas por número que debe apostar
+     */
+    private fun calculateBetAmount(columnCount: Int, totalAccumulated: Int): Int {
+        if (columnCount == 0) return 0
+        
+        // Para ganar mínimo 18 fichas netas, necesito recuperar las pérdidas + 18
+        val targetWin = totalAccumulated + 18
+        
+        // Si acierto un pleno, gano: fichasPorNumero × 35
+        // Necesito que: fichasPorNumero × 35 >= targetWin
+        val minFichasPorNumero = (targetWin + 34) / 35 // Redondeo hacia arriba
+        
+        return maxOf(1, minFichasPorNumero)
+    }
+
+    /**
+     * Actualiza los arrays de apuestas cuando cambian los contadores
+     */
+    private fun updateBetArrays(numbers: List<Int>) {
+        // Obtener los últimos 10 números
+        val lastTenNumbers = numbers.takeLast(10)
+        
+        // Contar cuántos números de cada columna hay en los últimos 10
+        val col1CountInLastTen = lastTenNumbers.count { isInColumn1(it) }
+        val col2CountInLastTen = lastTenNumbers.count { isInColumn2(it) }
+        val col3CountInLastTen = lastTenNumbers.count { isInColumn3(it) }
+        
+        // Calcular acumulados previos
+        val totalAccumulated1 = betCOL1.sumOf { it.betAmount }
+        val totalAccumulated2 = betCOL2.sumOf { it.betAmount }
+        val totalAccumulated3 = betCOL3.sumOf { it.betAmount }
+        
+        // Calcular fichas por número basándose en las pérdidas acumuladas
+        val fichasPorNumero1 = if (col1CountInLastTen > 0) calculateBetAmount(col1CountInLastTen, totalAccumulated1) else 0
+        val fichasPorNumero2 = if (col2CountInLastTen > 0) calculateBetAmount(col2CountInLastTen, totalAccumulated2) else 0
+        val fichasPorNumero3 = if (col3CountInLastTen > 0) calculateBetAmount(col3CountInLastTen, totalAccumulated3) else 0
+        
+        // Calcular apuestas totales (fichas por número × cantidad de números)
+        val bet1 = fichasPorNumero1 * col1CountInLastTen
+        val bet2 = fichasPorNumero2 * col2CountInLastTen
+        val bet3 = fichasPorNumero3 * col3CountInLastTen
+        
+        // Crear nuevas entradas de apuesta solo si hay números para apostar
+        if (col1CountInLastTen > 0) {
+            val betInfo1 = BetInfo(col1CountInLastTen, bet1, totalAccumulated1 + bet1)
+            betCOL1.add(betInfo1)
+        }
+        if (col2CountInLastTen > 0) {
+            val betInfo2 = BetInfo(col2CountInLastTen, bet2, totalAccumulated2 + bet2)
+            betCOL2.add(betInfo2)
+        }
+        if (col3CountInLastTen > 0) {
+            val betInfo3 = BetInfo(col3CountInLastTen, bet3, totalAccumulated3 + bet3)
+            betCOL3.add(betInfo3)
+        }
+        
+        // Actualizar visualización de fichas por número
+        // Si hay números de la columna, actualizar; si no hay números pero hay acumulado, mantener valor anterior
+        if (col1CountInLastTen > 0) {
+            betFichasCol1.text = fichasPorNumero1.toString()
+            updateBetFichasColor(betFichasCol1, fichasPorNumero1)
+        } else if (totalAccumulated1 > 0) {
+            // Mantener el valor anterior si hay acumulado
+            val lastFichas = if (betCOL1.isNotEmpty()) betCOL1.last().betAmount / maxOf(1, betCOL1.last().columnCount) else 0
+            betFichasCol1.text = lastFichas.toString()
+            updateBetFichasColor(betFichasCol1, lastFichas)
+        } else {
+            betFichasCol1.text = "0"
+            updateBetFichasColor(betFichasCol1, 0)
+        }
+        
+        if (col2CountInLastTen > 0) {
+            betFichasCol2.text = fichasPorNumero2.toString()
+            updateBetFichasColor(betFichasCol2, fichasPorNumero2)
+        } else if (totalAccumulated2 > 0) {
+            val lastFichas = if (betCOL2.isNotEmpty()) betCOL2.last().betAmount / maxOf(1, betCOL2.last().columnCount) else 0
+            betFichasCol2.text = lastFichas.toString()
+            updateBetFichasColor(betFichasCol2, lastFichas)
+        } else {
+            betFichasCol2.text = "0"
+            updateBetFichasColor(betFichasCol2, 0)
+        }
+        
+        if (col3CountInLastTen > 0) {
+            betFichasCol3.text = fichasPorNumero3.toString()
+            updateBetFichasColor(betFichasCol3, fichasPorNumero3)
+        } else if (totalAccumulated3 > 0) {
+            val lastFichas = if (betCOL3.isNotEmpty()) betCOL3.last().betAmount / maxOf(1, betCOL3.last().columnCount) else 0
+            betFichasCol3.text = lastFichas.toString()
+            updateBetFichasColor(betFichasCol3, lastFichas)
+        } else {
+            betFichasCol3.text = "0"
+            updateBetFichasColor(betFichasCol3, 0)
+        }
+        
+        Log.d("Apuestas", "Últimos 10: $lastTenNumbers")
+        Log.d("Apuestas", "COL1: $col1CountInLastTen números, $fichasPorNumero1 fichas/número, total: $bet1, acumulado: ${totalAccumulated1 + bet1}")
+        Log.d("Apuestas", "COL2: $col2CountInLastTen números, $fichasPorNumero2 fichas/número, total: $bet2, acumulado: ${totalAccumulated2 + bet2}")
+        Log.d("Apuestas", "COL3: $col3CountInLastTen números, $fichasPorNumero3 fichas/número, total: $bet3, acumulado: ${totalAccumulated3 + bet3}")
+    }
+
+    /**
+     * Aplica color de fondo basado en el valor de fichas por número (1-10)
+     * Gama de amarillo a rojo
+     */
+    private fun updateBetFichasColor(textView: TextView, value: Int) {
+        val color = when (value) {
+            0 -> android.graphics.Color.WHITE
+            1 -> android.graphics.Color.rgb(255, 255, 0) // Amarillo
+            2 -> android.graphics.Color.rgb(255, 230, 0) // Amarillo-naranja
+            3 -> android.graphics.Color.rgb(255, 204, 0) // Naranja claro
+            4 -> android.graphics.Color.rgb(255, 179, 0) // Naranja
+            5 -> android.graphics.Color.rgb(255, 153, 0) // Naranja-rojo claro
+            6 -> android.graphics.Color.rgb(255, 128, 0) // Naranja-rojo
+            7 -> android.graphics.Color.rgb(255, 102, 0) // Rojo-naranja
+            8 -> android.graphics.Color.rgb(255, 77, 0)  // Rojo claro
+            9 -> android.graphics.Color.rgb(255, 51, 0)  // Rojo medio
+            10 -> android.graphics.Color.rgb(255, 0, 0)  // Rojo
+            else -> android.graphics.Color.rgb(255, 0, 0) // Rojo para valores > 10
+        }
+        
+        textView.setBackgroundColor(color)
+        
+        // Ajustar color del texto para mejor contraste
+        val textColor = if (value >= 6) android.graphics.Color.WHITE else android.graphics.Color.BLACK
+        textView.setTextColor(textColor)
     }
 
     companion object {
