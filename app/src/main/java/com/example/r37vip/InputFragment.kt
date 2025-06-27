@@ -79,6 +79,11 @@ class InputFragment : Fragment() {
     private lateinit var betFichasCol2: TextView
     private lateinit var betFichasCol3: TextView
 
+    // Acumulados de fichas gastadas por columna
+    private lateinit var accumulatedBetFichasCol1: TextView
+    private lateinit var accumulatedBetFichasCol2: TextView
+    private lateinit var accumulatedBetFichasCol3: TextView
+
     // Progresiones
     private lateinit var progresion1: TextView
     private lateinit var progresion2: TextView
@@ -154,6 +159,11 @@ class InputFragment : Fragment() {
                 betFichasCol2 = view.findViewById(R.id.betFichasCol2)
                 betFichasCol3 = view.findViewById(R.id.betFichasCol3)
 
+                // Initialize accumulated bet fichas per column
+                accumulatedBetFichasCol1 = view.findViewById(R.id.accumulatedBetFichasCol1)
+                accumulatedBetFichasCol2 = view.findViewById(R.id.accumulatedBetFichasCol2)
+                accumulatedBetFichasCol3 = view.findViewById(R.id.accumulatedBetFichasCol3)
+
                 // Initialize progresions
                 progresion1 = view.findViewById(R.id.progresion1)
                 progresion2 = view.findViewById(R.id.progresion2)
@@ -183,6 +193,16 @@ class InputFragment : Fragment() {
                 updateBetFichasColor(betFichasCol1, 0)
                 updateBetFichasColor(betFichasCol2, 0)
                 updateBetFichasColor(betFichasCol3, 0)
+                
+                // Initialize accumulated bet fichas to zero
+                accumulatedBetFichasCol1.text = "0"
+                accumulatedBetFichasCol2.text = "0"
+                accumulatedBetFichasCol3.text = "0"
+                
+                // Reset bet arrays
+                betCOL1.clear()
+                betCOL2.clear()
+                betCOL3.clear()
                 
                 Log.d(TAG, "Views inicializadas correctamente")
             } catch (e: Exception) {
@@ -585,6 +605,16 @@ class InputFragment : Fragment() {
                 it.setBackgroundColor(android.graphics.Color.rgb(74, 20, 140)) // Color púrpura original
                 it.setTextColor(android.graphics.Color.WHITE)
             }
+
+            // Reset accumulated bet fichas
+            accumulatedBetFichasCol1.text = "0"
+            accumulatedBetFichasCol2.text = "0"
+            accumulatedBetFichasCol3.text = "0"
+            
+            // Reset bet arrays
+            betCOL1.clear()
+            betCOL2.clear()
+            betCOL3.clear()
         } catch (e: Exception) {
             Log.e(TAG, "Error reseteando indicadores", e)
         }
@@ -1146,13 +1176,13 @@ class InputFragment : Fragment() {
      * Actualiza los arrays de apuestas cuando cambian los contadores
      */
     private fun updateBetArrays(numbers: List<Int>) {
-        // Obtener los últimos 5 números (cambiado de 10 a 5)
-        val lastFiveNumbers = numbers.takeLast(5)
+        // Obtener los últimos 10 números (cambiado de 5 a 10)
+        val lastTenNumbers = numbers.takeLast(10)
         
-        // Contar cuántos números de cada columna hay en los últimos 5 (cambiado de 10 a 5)
-        val col1CountInLastFive = lastFiveNumbers.count { isInColumn1(it) }
-        val col2CountInLastFive = lastFiveNumbers.count { isInColumn2(it) }
-        val col3CountInLastFive = lastFiveNumbers.count { isInColumn3(it) }
+        // Contar cuántos números de cada columna hay en los últimos 10
+        val col1CountInLastTen = lastTenNumbers.count { isInColumn1(it) }
+        val col2CountInLastTen = lastTenNumbers.count { isInColumn2(it) }
+        val col3CountInLastTen = lastTenNumbers.count { isInColumn3(it) }
         
         // Calcular acumulados previos
         val totalAccumulated1 = betCOL1.sumOf { it.betAmount }
@@ -1160,32 +1190,32 @@ class InputFragment : Fragment() {
         val totalAccumulated3 = betCOL3.sumOf { it.betAmount }
         
         // Calcular fichas por número basándose en las pérdidas acumuladas
-        val fichasPorNumero1 = if (col1CountInLastFive > 0) calculateBetAmount(col1CountInLastFive, totalAccumulated1) else 0
-        val fichasPorNumero2 = if (col2CountInLastFive > 0) calculateBetAmount(col2CountInLastFive, totalAccumulated2) else 0
-        val fichasPorNumero3 = if (col3CountInLastFive > 0) calculateBetAmount(col3CountInLastFive, totalAccumulated3) else 0
+        val fichasPorNumero1 = if (col1CountInLastTen > 0) calculateBetAmount(col1CountInLastTen, totalAccumulated1) else 0
+        val fichasPorNumero2 = if (col2CountInLastTen > 0) calculateBetAmount(col2CountInLastTen, totalAccumulated2) else 0
+        val fichasPorNumero3 = if (col3CountInLastTen > 0) calculateBetAmount(col3CountInLastTen, totalAccumulated3) else 0
         
         // Calcular apuestas totales (fichas por número × cantidad de números)
-        val bet1 = fichasPorNumero1 * col1CountInLastFive
-        val bet2 = fichasPorNumero2 * col2CountInLastFive
-        val bet3 = fichasPorNumero3 * col3CountInLastFive
+        val bet1 = fichasPorNumero1 * col1CountInLastTen
+        val bet2 = fichasPorNumero2 * col2CountInLastTen
+        val bet3 = fichasPorNumero3 * col3CountInLastTen
         
         // Crear nuevas entradas de apuesta solo si hay números para apostar
-        if (col1CountInLastFive > 0) {
-            val betInfo1 = BetInfo(col1CountInLastFive, bet1, totalAccumulated1 + bet1)
+        if (col1CountInLastTen > 0) {
+            val betInfo1 = BetInfo(col1CountInLastTen, bet1, totalAccumulated1 + bet1)
             betCOL1.add(betInfo1)
         }
-        if (col2CountInLastFive > 0) {
-            val betInfo2 = BetInfo(col2CountInLastFive, bet2, totalAccumulated2 + bet2)
+        if (col2CountInLastTen > 0) {
+            val betInfo2 = BetInfo(col2CountInLastTen, bet2, totalAccumulated2 + bet2)
             betCOL2.add(betInfo2)
         }
-        if (col3CountInLastFive > 0) {
-            val betInfo3 = BetInfo(col3CountInLastFive, bet3, totalAccumulated3 + bet3)
+        if (col3CountInLastTen > 0) {
+            val betInfo3 = BetInfo(col3CountInLastTen, bet3, totalAccumulated3 + bet3)
             betCOL3.add(betInfo3)
         }
         
         // Actualizar visualización de fichas por número
         // Si hay números de la columna, actualizar; si no hay números pero hay acumulado, mantener valor anterior
-        if (col1CountInLastFive > 0) {
+        if (col1CountInLastTen > 0) {
             betFichasCol1.text = fichasPorNumero1.toString()
             updateBetFichasColor(betFichasCol1, fichasPorNumero1)
         } else if (totalAccumulated1 > 0) {
@@ -1198,7 +1228,7 @@ class InputFragment : Fragment() {
             updateBetFichasColor(betFichasCol1, 0)
         }
         
-        if (col2CountInLastFive > 0) {
+        if (col2CountInLastTen > 0) {
             betFichasCol2.text = fichasPorNumero2.toString()
             updateBetFichasColor(betFichasCol2, fichasPorNumero2)
         } else if (totalAccumulated2 > 0) {
@@ -1210,7 +1240,7 @@ class InputFragment : Fragment() {
             updateBetFichasColor(betFichasCol2, 0)
         }
         
-        if (col3CountInLastFive > 0) {
+        if (col3CountInLastTen > 0) {
             betFichasCol3.text = fichasPorNumero3.toString()
             updateBetFichasColor(betFichasCol3, fichasPorNumero3)
         } else if (totalAccumulated3 > 0) {
@@ -1222,10 +1252,19 @@ class InputFragment : Fragment() {
             updateBetFichasColor(betFichasCol3, 0)
         }
         
-        Log.d("Apuestas", "Últimos 5: $lastFiveNumbers")
-        Log.d("Apuestas", "COL1: $col1CountInLastFive números, $fichasPorNumero1 fichas/número, total: $bet1, acumulado: ${totalAccumulated1 + bet1}")
-        Log.d("Apuestas", "COL2: $col2CountInLastFive números, $fichasPorNumero2 fichas/número, total: $bet2, acumulado: ${totalAccumulated2 + bet2}")
-        Log.d("Apuestas", "COL3: $col3CountInLastFive números, $fichasPorNumero3 fichas/número, total: $bet3, acumulado: ${totalAccumulated3 + bet3}")
+        // Actualizar campos de acumulados de fichas gastadas (incluyendo la apuesta actual si se hace)
+        val newTotalAccumulated1 = if (col1CountInLastTen > 0) totalAccumulated1 + bet1 else totalAccumulated1
+        val newTotalAccumulated2 = if (col2CountInLastTen > 0) totalAccumulated2 + bet2 else totalAccumulated2
+        val newTotalAccumulated3 = if (col3CountInLastTen > 0) totalAccumulated3 + bet3 else totalAccumulated3
+        
+        accumulatedBetFichasCol1.text = newTotalAccumulated1.toString()
+        accumulatedBetFichasCol2.text = newTotalAccumulated2.toString()
+        accumulatedBetFichasCol3.text = newTotalAccumulated3.toString()
+        
+        Log.d("Apuestas", "Últimos 10: $lastTenNumbers")
+        Log.d("Apuestas", "COL1: $col1CountInLastTen números, $fichasPorNumero1 fichas/número, total: $bet1, acumulado: $newTotalAccumulated1")
+        Log.d("Apuestas", "COL2: $col2CountInLastTen números, $fichasPorNumero2 fichas/número, total: $bet2, acumulado: $newTotalAccumulated2")
+        Log.d("Apuestas", "COL3: $col3CountInLastTen números, $fichasPorNumero3 fichas/número, total: $bet3, acumulado: $newTotalAccumulated3")
     }
 
     /**
