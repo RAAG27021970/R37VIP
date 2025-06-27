@@ -26,7 +26,7 @@ class InputFragment : Fragment() {
     
     // Variable configurable para el objetivo de fichas a ganar
     // Cambiar este valor para ajustar la agresividad de la progresión
-    private val TARGET_FICHAS_OBJETIVO = 9
+    private val TARGET_FICHAS_OBJETIVO = 5
     
     // Clase de datos para almacenar información de apuestas
     data class BetInfo(
@@ -1303,8 +1303,8 @@ class InputFragment : Fragment() {
          * CONFIGURACIÓN DE PROGRESIÓN:
          * Para cambiar la agresividad de la progresión, modifica la variable TARGET_FICHAS_OBJETIVO
          * en la clase InputFragment:
-         * - Valor actual: 9 fichas (más agresivo)
-         * - Valor anterior: 5 fichas (menos agresivo)
+         * - Valor actual: 5 fichas (menos agresivo)
+         * - Valor anterior: 9 fichas (más agresivo)
          * - Valores recomendados: entre 3-20 fichas
          * 
          * Ejemplo: cambiar "private val TARGET_FICHAS_OBJETIVO = 9" por el valor deseado
