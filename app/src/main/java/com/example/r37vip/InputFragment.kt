@@ -26,7 +26,7 @@ class InputFragment : Fragment() {
     
     // Variable configurable para el objetivo de fichas a ganar
     // Cambiar este valor para ajustar la agresividad de la progresión
-    private val TARGET_FICHAS_OBJETIVO = 5
+    private val TARGET_FICHAS_OBJETIVO = 9
     
     // Clase de datos para almacenar información de apuestas
     data class BetInfo(
@@ -282,7 +282,7 @@ class InputFragment : Fragment() {
             }
             1, 4, 7, 10, 13, 16, 19, 22, 25, 28, 31, 34 -> {
                 textView.setBackgroundColor(android.graphics.Color.rgb(0, 200, 83)) // Verde
-                textView.setTextColor(android.graphics.Color.BLACK)
+                textView.setTextColor(android.graphics.Color.WHITE)
             }
             2, 5, 8, 11, 14, 17, 20, 23, 26, 29, 32, 35 -> {
                 textView.setBackgroundColor(android.graphics.Color.YELLOW) // Amarillo
@@ -709,9 +709,9 @@ class InputFragment : Fragment() {
                         indicatorViews[index].setTextColor(android.graphics.Color.BLACK)
                     }
                     delay <= 17 -> {
-                        // Verde claro con texto negro
-                        indicatorViews[index].setBackgroundColor(android.graphics.Color.rgb(144, 238, 144))
-                        indicatorViews[index].setTextColor(android.graphics.Color.BLACK)
+                        // Verde oscuro con texto blanco
+                        indicatorViews[index].setBackgroundColor(android.graphics.Color.rgb(76, 175, 80))
+                        indicatorViews[index].setTextColor(android.graphics.Color.WHITE)
                     }
                     delay <= 30 -> {
                         // Amarillo con texto negro
@@ -1230,28 +1230,29 @@ class InputFragment : Fragment() {
 
     /**
      * Aplica color de fondo basado en el valor de fichas por número
-     * Gama de colores de frío a calor: azul -> verde -> amarillo -> naranja -> rojo
+     * Gama de colores de frío a calor: amarillo -> naranja -> rojo
      */
     private fun updateBetFichasColor(textView: TextView, value: Int) {
         val color = when (value) {
             0 -> android.graphics.Color.WHITE
-            1 -> android.graphics.Color.rgb(0, 100, 255) // Azul frío
-            2 -> android.graphics.Color.rgb(0, 150, 255) // Azul claro
-            3 -> android.graphics.Color.rgb(0, 200, 100) // Verde azulado
-            4 -> android.graphics.Color.rgb(100, 200, 0) // Verde
-            5 -> android.graphics.Color.rgb(200, 200, 0) // Verde amarillento
-            6 -> android.graphics.Color.rgb(255, 255, 0) // Amarillo
-            7 -> android.graphics.Color.rgb(255, 200, 0) // Amarillo naranja
-            8 -> android.graphics.Color.rgb(255, 150, 0) // Naranja
-            9 -> android.graphics.Color.rgb(255, 100, 0) // Naranja rojizo
-            10 -> android.graphics.Color.rgb(255, 50, 0) // Rojo naranja
-            else -> android.graphics.Color.rgb(255, 0, 0) // Rojo caliente
+            1 -> android.graphics.Color.rgb(255, 255, 0) // Amarillo
+            2 -> android.graphics.Color.rgb(255, 200, 0) // Amarillo naranja
+            3 -> android.graphics.Color.rgb(255, 150, 0) // Naranja
+            4 -> android.graphics.Color.rgb(255, 100, 0) // Naranja rojizo
+            5 -> android.graphics.Color.rgb(255, 50, 0) // Rojo naranja
+            6 -> android.graphics.Color.rgb(255, 25, 0) // Rojo claro
+            7 -> android.graphics.Color.rgb(255, 0, 0) // Rojo intenso
+            else -> android.graphics.Color.rgb(200, 0, 0) // Rojo muy intenso
         }
         
         textView.setBackgroundColor(color)
         
-        // Usar la función de contraste automático para el texto
-        val textColor = getContrastTextColor(color)
+        // Forzar texto negro para amarillo, blanco para naranjas y rojos
+        val textColor = when (value) {
+            0 -> android.graphics.Color.BLACK // Fondo blanco
+            1, 2 -> android.graphics.Color.BLACK // Amarillo y amarillo naranja
+            else -> android.graphics.Color.WHITE // Naranjas y rojos
+        }
         textView.setTextColor(textColor)
     }
 
@@ -1263,11 +1264,11 @@ class InputFragment : Fragment() {
          * CONFIGURACIÓN DE PROGRESIÓN:
          * Para cambiar la agresividad de la progresión, modifica la variable TARGET_FICHAS_OBJETIVO
          * en la clase InputFragment:
-         * - Valor actual: 5 fichas (menos agresivo)
-         * - Valor anterior: 18 fichas (más agresivo)
+         * - Valor actual: 9 fichas (más agresivo)
+         * - Valor anterior: 5 fichas (menos agresivo)
          * - Valores recomendados: entre 3-20 fichas
          * 
-         * Ejemplo: cambiar "private val TARGET_FICHAS_OBJETIVO = 5" por el valor deseado
+         * Ejemplo: cambiar "private val TARGET_FICHAS_OBJETIVO = 9" por el valor deseado
          */
         
         fun newInstance() = InputFragment()
