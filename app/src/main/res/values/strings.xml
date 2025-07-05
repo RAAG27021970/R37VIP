@@ -2,7 +2,7 @@
 <resources>
     <string name="app_name">R37VIP</string>
     <string name="tab_input">Input</string>
-    <string name="tab_history">History Grid</string>
+    <string name="tab_history">Grid</string>
     <string name="hint_enter_number">Enter number (0-36)</string>
     <string name="button_clear">Clear</string>
     <string name="button_enter">Enter</string>

@@ -28,7 +28,7 @@ class MainActivity : AppCompatActivity() {
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             tab.text = when (position) {
                 0 -> "Input"
-                1 -> "History Grid"
+                1 -> "Grid"
                 2 -> "Table"
                 3 -> "PLATE"
                 else -> null

@@ -445,18 +445,18 @@ class InputFragment : Fragment() {
         updateBetArrays(numbers)
     }
 
-    private fun getColorForValue(value: Int, maxValue: Int = 6): Int {
-        // Normalizar el valor entre 0 y 1, con máximo de 6
+    private fun getColorForValue(value: Int, maxValue: Int = 8): Int {
+        // Normalizar el valor entre 0 y 1, con máximo de 8
         val normalizedValue = (value.toFloat() / maxValue).coerceIn(0f, 1f)
         
-        // Crear gama de colores: verde (1) -> naranja (3-4) -> rojo (6)
+        // Crear gama de colores: amarillo (1) -> naranja (4) -> rojo (8)
         val red: Int
         val green: Int
         val blue = 0
         
         when {
             normalizedValue <= 0.5f -> {
-                // De verde a naranja (0.0 a 0.5)
+                // De amarillo a naranja (0.0 a 0.5)
                 val factor = normalizedValue * 2 // 0 a 1
                 red = (255 * factor).toInt()
                 green = 255
@@ -474,12 +474,18 @@ class InputFragment : Fragment() {
 
     private fun updateCounterColor(textView: TextView, value: Int) {
         try {
-            val color = getColorForValue(value)
-            textView.setBackgroundColor(color)
-            
-            // Calcular el contraste del texto basado en el color de fondo
-            val textColor = getContrastTextColor(color)
-            textView.setTextColor(textColor)
+            if (value == 0) {
+                // Si el valor es 0, fondo negro y letra blanca
+                textView.setBackgroundColor(android.graphics.Color.BLACK)
+                textView.setTextColor(android.graphics.Color.WHITE)
+            } else {
+                val color = getColorForValue(value, 8)
+                textView.setBackgroundColor(color)
+                
+                // Calcular el contraste del texto basado en el color de fondo
+                val textColor = getContrastTextColor(color)
+                textView.setTextColor(textColor)
+            }
         } catch (e: Exception) {
             Log.e(TAG, "Error actualizando color del contador", e)
         }
@@ -562,12 +568,11 @@ class InputFragment : Fragment() {
             counter3.text = "0"
             counter4.text = "0"
 
-            // Reset counter colors
-            val counterViews = listOf(counter1, counter2, counter3, counter4)
-            counterViews.forEach {
-                it.setBackgroundColor(android.graphics.Color.rgb(26, 35, 126)) // Color azul original
-                it.setTextColor(android.graphics.Color.WHITE)
-            }
+            // Reset counter colors using new color scheme
+            updateCounterColor(counter1, 0)
+            updateCounterColor(counter2, 0)
+            updateCounterColor(counter3, 0)
+            updateCounterColor(counter4, 0)
 
             // Reset column counters
             column1Counter.text = "0"
@@ -594,17 +599,16 @@ class InputFragment : Fragment() {
             updateBetFichasColor(betFichasCol3, 0)
 
             // Reset progresions
-            progresion1.text = getString(R.string.empty_stat)
-            progresion2.text = getString(R.string.empty_stat)
-            progresion3.text = getString(R.string.empty_stat)
-            progresion4.text = getString(R.string.empty_stat)
+            progresion1.text = "1"
+            progresion2.text = "1"
+            progresion3.text = "1"
+            progresion4.text = "1"
 
-            // Reset progresion colors
-            val progresionViews = listOf(progresion1, progresion2, progresion3, progresion4)
-            progresionViews.forEach {
-                it.setBackgroundColor(android.graphics.Color.rgb(74, 20, 140)) // Color púrpura original
-                it.setTextColor(android.graphics.Color.WHITE)
-            }
+            // Reset progresion colors using new color scheme
+            updateProgresionColor(progresion1, 1)
+            updateProgresionColor(progresion2, 1)
+            updateProgresionColor(progresion3, 1)
+            updateProgresionColor(progresion4, 1)
 
             // Reset accumulated bet fichas
             accumulatedBetFichasCol1.text = "0"
@@ -780,51 +784,18 @@ class InputFragment : Fragment() {
     }
 
     private fun updateProgresionColor(textView: TextView, value: Int) {
-        when {
-            value in 1..4 -> {
-                // Verde oscuro
-                textView.setBackgroundColor(android.graphics.Color.rgb(76, 175, 80))
-                textView.setTextColor(android.graphics.Color.WHITE)
-            }
-            value in 5..9 -> {
-                // Verde medio
-                textView.setBackgroundColor(android.graphics.Color.rgb(129, 199, 132))
-                textView.setTextColor(android.graphics.Color.BLACK)
-            }
-            value in 10..13 -> {
-                // Verde claro
-                textView.setBackgroundColor(android.graphics.Color.rgb(165, 214, 167))
-                textView.setTextColor(android.graphics.Color.BLACK)
-            }
-            value in 14..16 -> {
-                // Verde muy claro
-                textView.setBackgroundColor(android.graphics.Color.rgb(200, 230, 201))
-                textView.setTextColor(android.graphics.Color.BLACK)
-            }
-            value in 17..18 -> {
-                // Amarillo
-                textView.setBackgroundColor(android.graphics.Color.rgb(255, 235, 59))
-                textView.setTextColor(android.graphics.Color.BLACK)
-            }
-            value in 19..20 -> {
-                // Naranja
-                textView.setBackgroundColor(android.graphics.Color.rgb(255, 152, 0))
-                textView.setTextColor(android.graphics.Color.WHITE)
-            }
-            value in 21..22 -> {
-                // Rojo claro
-                textView.setBackgroundColor(android.graphics.Color.rgb(244, 67, 54))
-                textView.setTextColor(android.graphics.Color.WHITE)
-            }
-            value >= 23 -> {
-                // Rojo intenso
-                textView.setBackgroundColor(android.graphics.Color.rgb(198, 40, 40))
-                textView.setTextColor(android.graphics.Color.WHITE)
-            }
-            else -> {  // value == 0
-                textView.setBackgroundColor(android.graphics.Color.LTGRAY)
-                textView.setTextColor(android.graphics.Color.BLACK)
-            }
+        try {
+            val color = getColorForValue(value, 8)
+            textView.setBackgroundColor(color)
+            
+            // Calcular el contraste del texto basado en el color de fondo
+            val textColor = getContrastTextColor(color)
+            textView.setTextColor(textColor)
+        } catch (e: Exception) {
+            Log.e(TAG, "Error actualizando color de progresión", e)
+            // Color por defecto en caso de error
+            textView.setBackgroundColor(android.graphics.Color.LTGRAY)
+            textView.setTextColor(android.graphics.Color.BLACK)
         }
     }
 
@@ -862,16 +833,21 @@ class InputFragment : Fragment() {
             counter1.text = counters[3].toString()
             updateCounterColor(counter1, counters[3])
 
-            // Actualizar las progresiones
+            // Actualizar las progresiones (siempre mínimo 1)
             val progresions = StreetDelayCalculator.getProgresions()
-            progresion1.text = progresions[3].toString()  // Posición 1 muestra índice 3
-            updateProgresionColor(progresion1, progresions[3])
-            progresion2.text = progresions[2].toString()  // Posición 2 muestra índice 2
-            updateProgresionColor(progresion2, progresions[2])
-            progresion3.text = progresions[1].toString()  // Posición 3 muestra índice 1
-            updateProgresionColor(progresion3, progresions[1])
-            progresion4.text = progresions[0].toString()  // Posición 4 muestra índice 0
-            updateProgresionColor(progresion4, progresions[0])
+            val progresion1Value = if (progresions[3] <= 0) 1 else progresions[3]
+            val progresion2Value = if (progresions[2] <= 0) 1 else progresions[2]
+            val progresion3Value = if (progresions[1] <= 0) 1 else progresions[1]
+            val progresion4Value = if (progresions[0] <= 0) 1 else progresions[0]
+            
+            progresion1.text = progresion1Value.toString()  // Posición 1 muestra índice 3
+            updateProgresionColor(progresion1, progresion1Value)
+            progresion2.text = progresion2Value.toString()  // Posición 2 muestra índice 2
+            updateProgresionColor(progresion2, progresion2Value)
+            progresion3.text = progresion3Value.toString()  // Posición 3 muestra índice 1
+            updateProgresionColor(progresion3, progresion3Value)
+            progresion4.text = progresion4Value.toString()  // Posición 4 muestra índice 0
+            updateProgresionColor(progresion4, progresion4Value)
 
             // Guardar el estado actual
             saveDelayStats()
@@ -1088,9 +1064,9 @@ class InputFragment : Fragment() {
                 text = i.toString()
                 layoutParams = GridLayout.LayoutParams().apply {
                     width = 0
-                    height = GridLayout.LayoutParams.WRAP_CONTENT
+                    height = 110
                     columnSpec = GridLayout.spec(GridLayout.UNDEFINED, 1f)
-                    setMargins(8, 8, 8, 8)
+                    setMargins(8, 4, 8, 4)
                 }
                 setOnClickListener { appendNumber(i.toString()) }
             }
@@ -1102,9 +1078,9 @@ class InputFragment : Fragment() {
             text = context.getString(R.string.button_clear)
             layoutParams = GridLayout.LayoutParams().apply {
                 width = 0
-                height = GridLayout.LayoutParams.WRAP_CONTENT
+                height = 110
                 columnSpec = GridLayout.spec(GridLayout.UNDEFINED, 1f)
-                setMargins(8, 8, 8, 8)
+                setMargins(8, 4, 8, 4)
             }
             setOnClickListener { numberInput.setText("") }
         }
@@ -1114,9 +1090,9 @@ class InputFragment : Fragment() {
             text = context.getString(R.string.button_zero)
             layoutParams = GridLayout.LayoutParams().apply {
                 width = 0
-                height = GridLayout.LayoutParams.WRAP_CONTENT
+                height = 110
                 columnSpec = GridLayout.spec(GridLayout.UNDEFINED, 1f)
-                setMargins(8, 8, 8, 8)
+                setMargins(8, 4, 8, 4)
             }
             setOnClickListener { appendNumber("0") }
         }
@@ -1126,9 +1102,9 @@ class InputFragment : Fragment() {
             text = context.getString(R.string.button_enter)
             layoutParams = GridLayout.LayoutParams().apply {
                 width = 0
-                height = GridLayout.LayoutParams.WRAP_CONTENT
+                height = 110
                 columnSpec = GridLayout.spec(GridLayout.UNDEFINED, 1f)
-                setMargins(8, 8, 8, 8)
+                setMargins(8, 4, 8, 4)
             }
             setOnClickListener { submitNumber() }
         }

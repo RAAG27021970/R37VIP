@@ -5,18 +5,16 @@
     android:layout_height="match_parent"
     android:padding="16dp">
 
-    <!-- Combined Statistics Row -->
+    <!-- Row 1: Statistics (stat4, stat3, stat2, stat1) -->
     <LinearLayout
-        android:id="@+id/combinedStatisticsContainer"
+        android:id="@+id/statisticsRow"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center"
         android:layout_marginTop="8dp"
-        android:visibility="gone"
         app:layout_constraintTop_toTopOf="parent">
 
-        <!-- First group: stat4, stat3, stat2, stat1 -->
         <com.google.android.material.card.MaterialCardView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -30,9 +28,9 @@
                 android:layout_height="wrap_content"
                 android:text="@string/stat_4"
                 android:gravity="center"
-                android:padding="2dp"
-                android:textSize="12sp"
-                android:minWidth="30dp"/>
+                android:padding="6dp"
+                android:textSize="18sp"
+                android:minWidth="40dp"/>
         </com.google.android.material.card.MaterialCardView>
 
         <com.google.android.material.card.MaterialCardView
@@ -48,9 +46,9 @@
                 android:layout_height="wrap_content"
                 android:text="@string/stat_3"
                 android:gravity="center"
-                android:padding="2dp"
-                android:textSize="12sp"
-                android:minWidth="30dp"/>
+                android:padding="6dp"
+                android:textSize="18sp"
+                android:minWidth="40dp"/>
         </com.google.android.material.card.MaterialCardView>
 
         <com.google.android.material.card.MaterialCardView
@@ -66,9 +64,9 @@
                 android:layout_height="wrap_content"
                 android:text="@string/stat_2"
                 android:gravity="center"
-                android:padding="2dp"
-                android:textSize="12sp"
-                android:minWidth="30dp"/>
+                android:padding="6dp"
+                android:textSize="18sp"
+                android:minWidth="40dp"/>
         </com.google.android.material.card.MaterialCardView>
 
         <com.google.android.material.card.MaterialCardView
@@ -84,20 +82,23 @@
                 android:layout_height="wrap_content"
                 android:text="@string/stat_1"
                 android:gravity="center"
-                android:padding="2dp"
-                android:textSize="12sp"
-                android:minWidth="30dp"/>
+                android:padding="6dp"
+                android:textSize="18sp"
+                android:minWidth="40dp"/>
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- Separator -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="-"
-            android:textSize="12sp"
-            android:padding="2dp"/>
+    </LinearLayout>
 
-        <!-- Second group: stat8, stat7, stat6, stat5 -->
+    <!-- Hidden Statistics Row (stat8, stat7, stat6, stat5) -->
+    <LinearLayout
+        android:id="@+id/hiddenStatisticsRow"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/statisticsRow">
+
         <com.google.android.material.card.MaterialCardView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -172,34 +173,15 @@
 
     </LinearLayout>
 
-    <!-- Recent Numbers List -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recentNumbersList"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        app:layout_constraintTop_toBottomOf="@id/combinedStatisticsContainer"/>
-
-    <!-- Second Separator Line -->
-    <View
-        android:id="@+id/separator2"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#CCCCCC"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintTop_toBottomOf="@id/combinedStatisticsContainer"/>
-
-    <!-- Combined Counters and Progressions Row (now becomes row 2) -->
+    <!-- Row 2: Counters (counter1, counter2, counter3, counter4) -->
     <LinearLayout
-        android:id="@+id/combinedCountersProgressionsContainer"
+        android:id="@+id/countersRow"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center"
-        android:layout_marginTop="4dp"
-        android:visibility="gone"
-        app:layout_constraintTop_toBottomOf="@id/separator2">
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@id/statisticsRow">
 
         <!-- First group: counter1, counter2, counter3, counter4 -->
         <com.google.android.material.card.MaterialCardView
@@ -216,10 +198,10 @@
                 android:layout_height="wrap_content"
                 android:text="0"
                 android:gravity="center"
-                android:padding="2dp"
-                android:textSize="12sp"
+                android:padding="6dp"
+                android:textSize="18sp"
                 android:textColor="@android:color/white"
-                android:minWidth="30dp"/>
+                android:minWidth="40dp"/>
         </com.google.android.material.card.MaterialCardView>
 
         <com.google.android.material.card.MaterialCardView
@@ -236,10 +218,10 @@
                 android:layout_height="wrap_content"
                 android:text="0"
                 android:gravity="center"
-                android:padding="2dp"
-                android:textSize="12sp"
+                android:padding="6dp"
+                android:textSize="18sp"
                 android:textColor="@android:color/white"
-                android:minWidth="30dp"/>
+                android:minWidth="40dp"/>
         </com.google.android.material.card.MaterialCardView>
 
         <com.google.android.material.card.MaterialCardView
@@ -256,10 +238,10 @@
                 android:layout_height="wrap_content"
                 android:text="0"
                 android:gravity="center"
-                android:padding="2dp"
-                android:textSize="12sp"
+                android:padding="6dp"
+                android:textSize="18sp"
                 android:textColor="@android:color/white"
-                android:minWidth="30dp"/>
+                android:minWidth="40dp"/>
         </com.google.android.material.card.MaterialCardView>
 
         <com.google.android.material.card.MaterialCardView
@@ -276,21 +258,24 @@
                 android:layout_height="wrap_content"
                 android:text="0"
                 android:gravity="center"
-                android:padding="2dp"
-                android:textSize="12sp"
+                android:padding="6dp"
+                android:textSize="18sp"
                 android:textColor="@android:color/white"
-                android:minWidth="30dp"/>
+                android:minWidth="40dp"/>
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- Separator -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="-"
-            android:textSize="12sp"
-            android:padding="2dp"/>
+    </LinearLayout>
 
-        <!-- Second group: progresion1, progresion2, progresion3, progresion4 -->
+    <!-- Row 3: Progressions (progresion1, progresion2, progresion3, progresion4) -->
+    <LinearLayout
+        android:id="@+id/progressionsRow"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@id/countersRow">
+
         <com.google.android.material.card.MaterialCardView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -305,10 +290,10 @@
                 android:layout_height="wrap_content"
                 android:text="0"
                 android:gravity="center"
-                android:padding="2dp"
-                android:textSize="12sp"
+                android:padding="6dp"
+                android:textSize="18sp"
                 android:textColor="@android:color/white"
-                android:minWidth="30dp"/>
+                android:minWidth="40dp"/>
         </com.google.android.material.card.MaterialCardView>
 
         <com.google.android.material.card.MaterialCardView
@@ -325,10 +310,10 @@
                 android:layout_height="wrap_content"
                 android:text="0"
                 android:gravity="center"
-                android:padding="2dp"
-                android:textSize="12sp"
+                android:padding="6dp"
+                android:textSize="18sp"
                 android:textColor="@android:color/white"
-                android:minWidth="30dp"/>
+                android:minWidth="40dp"/>
         </com.google.android.material.card.MaterialCardView>
 
         <com.google.android.material.card.MaterialCardView
@@ -345,10 +330,10 @@
                 android:layout_height="wrap_content"
                 android:text="0"
                 android:gravity="center"
-                android:padding="2dp"
-                android:textSize="12sp"
+                android:padding="6dp"
+                android:textSize="18sp"
                 android:textColor="@android:color/white"
-                android:minWidth="30dp"/>
+                android:minWidth="40dp"/>
         </com.google.android.material.card.MaterialCardView>
 
         <com.google.android.material.card.MaterialCardView
@@ -365,13 +350,21 @@
                 android:layout_height="wrap_content"
                 android:text="0"
                 android:gravity="center"
-                android:padding="2dp"
-                android:textSize="12sp"
+                android:padding="6dp"
+                android:textSize="18sp"
                 android:textColor="@android:color/white"
-                android:minWidth="30dp"/>
+                android:minWidth="40dp"/>
         </com.google.android.material.card.MaterialCardView>
 
     </LinearLayout>
+
+    <!-- Recent Numbers List (now row 4) -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recentNumbersList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@id/progressionsRow"/>
 
     <!-- Third Row for Last Numbers (now becomes row 3) -->
     <GridLayout
@@ -384,7 +377,7 @@
         android:useDefaultMargins="false"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
-        app:layout_constraintTop_toBottomOf="@id/combinedCountersProgressionsContainer">
+        app:layout_constraintTop_toBottomOf="@id/progressionsRow">
 
         <!-- Primera fila: números 1-5 -->
         <com.google.android.material.card.MaterialCardView
@@ -609,7 +602,7 @@
         android:rowCount="1"
         android:alignmentMode="alignMargins"
         android:useDefaultMargins="false"
-        android:layout_marginTop="33dp"
+        android:layout_marginTop="16dp"
         app:layout_constraintTop_toBottomOf="@id/lastNumbersContainer">
 
         <!-- Column 1 Counter Value -->
@@ -621,8 +614,9 @@
             android:layout_margin="2dp"
             android:text="0"
             android:gravity="center"
-            android:textSize="24sp"
-            android:background="@drawable/grid_cell_background"/>
+            android:textSize="16sp"
+            android:background="@drawable/grid_cell_background"
+            android:padding="2dp"/>
 
         <!-- Column 2 Counter Value -->
         <TextView
@@ -633,8 +627,9 @@
             android:layout_margin="2dp"
             android:text="0"
             android:gravity="center"
-            android:textSize="24sp"
-            android:background="@drawable/grid_cell_background"/>
+            android:textSize="16sp"
+            android:background="@drawable/grid_cell_background"
+            android:padding="2dp"/>
 
         <!-- Column 3 Counter Value -->
         <TextView
@@ -645,8 +640,9 @@
             android:layout_margin="2dp"
             android:text="0"
             android:gravity="center"
-            android:textSize="24sp"
-            android:background="@drawable/grid_cell_background"/>
+            android:textSize="16sp"
+            android:background="@drawable/grid_cell_background"
+            android:padding="2dp"/>
 
     </GridLayout>
 
@@ -671,8 +667,9 @@
             android:layout_margin="2dp"
             android:text="0"
             android:gravity="center"
-            android:textSize="24sp"
-            android:background="@drawable/grid_cell_background"/>
+            android:textSize="16sp"
+            android:background="@drawable/grid_cell_background"
+            android:padding="2dp"/>
 
         <!-- Secondary Column 2 Counter Value -->
         <TextView
@@ -683,8 +680,9 @@
             android:layout_margin="2dp"
             android:text="0"
             android:gravity="center"
-            android:textSize="24sp"
-            android:background="@drawable/grid_cell_background"/>
+            android:textSize="16sp"
+            android:background="@drawable/grid_cell_background"
+            android:padding="2dp"/>
 
         <!-- Secondary Column 3 Counter Value -->
         <TextView
@@ -695,8 +693,9 @@
             android:layout_margin="2dp"
             android:text="0"
             android:gravity="center"
-            android:textSize="24sp"
-            android:background="@drawable/grid_cell_background"/>
+            android:textSize="16sp"
+            android:background="@drawable/grid_cell_background"
+            android:padding="2dp"/>
 
     </GridLayout>
 
@@ -722,8 +721,9 @@
             android:layout_margin="2dp"
             android:text="0"
             android:gravity="center"
-            android:textSize="24sp"
-            android:background="@drawable/grid_cell_background"/>
+            android:textSize="16sp"
+            android:background="@drawable/grid_cell_background"
+            android:padding="2dp"/>
 
         <!-- Bet Fichas Column 2 -->
         <TextView
@@ -734,8 +734,9 @@
             android:layout_margin="2dp"
             android:text="0"
             android:gravity="center"
-            android:textSize="24sp"
-            android:background="@drawable/grid_cell_background"/>
+            android:textSize="16sp"
+            android:background="@drawable/grid_cell_background"
+            android:padding="2dp"/>
 
         <!-- Bet Fichas Column 3 -->
         <TextView
@@ -746,8 +747,9 @@
             android:layout_margin="2dp"
             android:text="0"
             android:gravity="center"
-            android:textSize="24sp"
-            android:background="@drawable/grid_cell_background"/>
+            android:textSize="16sp"
+            android:background="@drawable/grid_cell_background"
+            android:padding="2dp"/>
 
     </GridLayout>
 
@@ -773,9 +775,9 @@
             android:layout_margin="2dp"
             android:text="0"
             android:gravity="center"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:background="@drawable/grid_cell_background"/>
+            android:textSize="16sp"
+            android:background="@drawable/grid_cell_background"
+            android:padding="2dp"/>
 
         <!-- Accumulated Bet Fichas Column 2 -->
         <TextView
@@ -786,9 +788,9 @@
             android:layout_margin="2dp"
             android:text="0"
             android:gravity="center"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:background="@drawable/grid_cell_background"/>
+            android:textSize="16sp"
+            android:background="@drawable/grid_cell_background"
+            android:padding="2dp"/>
 
         <!-- Accumulated Bet Fichas Column 3 -->
         <TextView
@@ -799,9 +801,9 @@
             android:layout_margin="2dp"
             android:text="0"
             android:gravity="center"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:background="@drawable/grid_cell_background"/>
+            android:textSize="16sp"
+            android:background="@drawable/grid_cell_background"
+            android:padding="2dp"/>
 
     </GridLayout>
 
@@ -811,7 +813,7 @@
         android:layout_height="0dp"
         app:layout_constraintTop_toBottomOf="@id/betFichasContainer"
         app:layout_constraintBottom_toTopOf="@id/numberInput"
-        app:layout_constraintVertical_weight="1"/>
+        app:layout_constraintVertical_weight="0.3"/>
 
     <EditText
         android:id="@+id/numberInput"
@@ -821,11 +823,11 @@
         android:inputType="number"
         android:maxLength="2"
         android:textAlignment="center"
-        android:textSize="24sp"
+        android:textSize="18sp"
         android:textStyle="bold"
-        android:padding="12dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="16dp"
+        android:padding="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
         android:background="@drawable/input_background"
         app:layout_constraintBottom_toTopOf="@id/numericKeypad"/>
 
