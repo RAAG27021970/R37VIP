@@ -1064,9 +1064,10 @@ class InputFragment : Fragment() {
                 text = i.toString()
                 textSize = 20f
                 gravity = android.view.Gravity.CENTER
+                setPadding(0, 0, 0, 0)
                 layoutParams = GridLayout.LayoutParams().apply {
                     width = 0
-                    height = 110
+                    height = 120
                     columnSpec = GridLayout.spec(GridLayout.UNDEFINED, 1f)
                     setMargins(8, 4, 8, 4)
                 }
@@ -1080,9 +1081,10 @@ class InputFragment : Fragment() {
             text = context.getString(R.string.button_clear)
             textSize = 20f
             gravity = android.view.Gravity.CENTER
+            setPadding(0, 0, 0, 0)
             layoutParams = GridLayout.LayoutParams().apply {
                 width = 0
-                height = 110
+                height = 120
                 columnSpec = GridLayout.spec(GridLayout.UNDEFINED, 1f)
                 setMargins(8, 4, 8, 4)
             }
@@ -1094,9 +1096,10 @@ class InputFragment : Fragment() {
             text = context.getString(R.string.button_zero)
             textSize = 20f
             gravity = android.view.Gravity.CENTER
+            setPadding(0, 0, 0, 0)
             layoutParams = GridLayout.LayoutParams().apply {
                 width = 0
-                height = 110
+                height = 120
                 columnSpec = GridLayout.spec(GridLayout.UNDEFINED, 1f)
                 setMargins(8, 4, 8, 4)
             }
@@ -1108,9 +1111,10 @@ class InputFragment : Fragment() {
             text = context.getString(R.string.button_enter)
             textSize = 20f
             gravity = android.view.Gravity.CENTER
+            setPadding(0, 0, 0, 0)
             layoutParams = GridLayout.LayoutParams().apply {
                 width = 0
-                height = 110
+                height = 120
                 columnSpec = GridLayout.spec(GridLayout.UNDEFINED, 1f)
                 setMargins(8, 4, 8, 4)
             }
