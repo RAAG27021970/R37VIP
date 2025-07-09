@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Streets"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:layout_marginBottom="16dp"/>
+
+        <!-- Three Rows Layout -->
+        <LinearLayout
+            android:id="@+id/threeRowsContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_marginTop="8dp">
+
+            <!-- First row: stat4, stat3, stat2, stat1 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:layout_marginBottom="4dp">
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="4dp"
+                    app:cardElevation="1dp"
+                    android:layout_margin="1dp">
+
+                    <TextView
+                        android:id="@+id/stat4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/stat_4"
+                        android:gravity="center"
+                        android:padding="2dp"
+                        android:textSize="12sp"
+                        android:minWidth="30dp"/>
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="4dp"
+                    app:cardElevation="1dp"
+                    android:layout_margin="1dp">
+
+                    <TextView
+                        android:id="@+id/stat3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/stat_3"
+                        android:gravity="center"
+                        android:padding="2dp"
+                        android:textSize="12sp"
+                        android:minWidth="30dp"/>
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="4dp"
+                    app:cardElevation="1dp"
+                    android:layout_margin="1dp">
+
+                    <TextView
+                        android:id="@+id/stat2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/stat_2"
+                        android:gravity="center"
+                        android:padding="2dp"
+                        android:textSize="12sp"
+                        android:minWidth="30dp"/>
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="4dp"
+                    app:cardElevation="1dp"
+                    android:layout_margin="1dp">
+
+                    <TextView
+                        android:id="@+id/stat1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/stat_1"
+                        android:gravity="center"
+                        android:padding="2dp"
+                        android:textSize="12sp"
+                        android:minWidth="30dp"/>
+                </com.google.android.material.card.MaterialCardView>
+
+            </LinearLayout>
+
+            <!-- Second row: counter4, counter3, counter2, counter1 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:layout_marginBottom="4dp">
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="4dp"
+                    app:cardElevation="1dp"
+                    app:cardBackgroundColor="#1A237E"
+                    android:layout_margin="1dp">
+
+                    <TextView
+                        android:id="@+id/counter4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0"
+                        android:gravity="center"
+                        android:padding="2dp"
+                        android:textSize="12sp"
+                        android:textColor="@android:color/white"
+                        android:minWidth="30dp"/>
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="4dp"
+                    app:cardElevation="1dp"
+                    app:cardBackgroundColor="#1A237E"
+                    android:layout_margin="1dp">
+
+                    <TextView
+                        android:id="@+id/counter3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0"
+                        android:gravity="center"
+                        android:padding="2dp"
+                        android:textSize="12sp"
+                        android:textColor="@android:color/white"
+                        android:minWidth="30dp"/>
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="4dp"
+                    app:cardElevation="1dp"
+                    app:cardBackgroundColor="#1A237E"
+                    android:layout_margin="1dp">
+
+                    <TextView
+                        android:id="@+id/counter2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0"
+                        android:gravity="center"
+                        android:padding="2dp"
+                        android:textSize="12sp"
+                        android:textColor="@android:color/white"
+                        android:minWidth="30dp"/>
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="4dp"
+                    app:cardElevation="1dp"
+                    app:cardBackgroundColor="#1A237E"
+                    android:layout_margin="1dp">
+
+                    <TextView
+                        android:id="@+id/counter1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0"
+                        android:gravity="center"
+                        android:padding="2dp"
+                        android:textSize="12sp"
+                        android:textColor="@android:color/white"
+                        android:minWidth="30dp"/>
+                </com.google.android.material.card.MaterialCardView>
+
+            </LinearLayout>
+
+            <!-- Third row: progresion4, progresion3, progresion2, progresion1 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center">
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="4dp"
+                    app:cardElevation="1dp"
+                    app:cardBackgroundColor="#4A148C"
+                    android:layout_margin="1dp">
+
+                    <TextView
+                        android:id="@+id/progresion4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0"
+                        android:gravity="center"
+                        android:padding="2dp"
+                        android:textSize="12sp"
+                        android:textColor="@android:color/white"
+                        android:minWidth="30dp"/>
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="4dp"
+                    app:cardElevation="1dp"
+                    app:cardBackgroundColor="#4A148C"
+                    android:layout_margin="1dp">
+
+                    <TextView
+                        android:id="@+id/progresion3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0"
+                        android:gravity="center"
+                        android:padding="2dp"
+                        android:textSize="12sp"
+                        android:textColor="@android:color/white"
+                        android:minWidth="30dp"/>
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="4dp"
+                    app:cardElevation="1dp"
+                    app:cardBackgroundColor="#4A148C"
+                    android:layout_margin="1dp">
+
+                    <TextView
+                        android:id="@+id/progresion2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0"
+                        android:gravity="center"
+                        android:padding="2dp"
+                        android:textSize="12sp"
+                        android:textColor="@android:color/white"
+                        android:minWidth="30dp"/>
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="4dp"
+                    app:cardElevation="1dp"
+                    app:cardBackgroundColor="#4A148C"
+                    android:layout_margin="1dp">
+
+                    <TextView
+                        android:id="@+id/progresion1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0"
+                        android:gravity="center"
+                        android:padding="2dp"
+                        android:textSize="12sp"
+                        android:textColor="@android:color/white"
+                        android:minWidth="30dp"/>
+                </com.google.android.material.card.MaterialCardView>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+</ScrollView> 
