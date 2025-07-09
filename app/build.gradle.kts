@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.r37vip"
+    namespace = "com.r37vip.app"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.r37vip"
+        applicationId = "com.r37vip.app"
         minSdk = 24
         targetSdk = 34
         versionCode = 1

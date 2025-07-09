@@ -27,4 +27,7 @@
     <string name="column_counter_1_2">Col 1_2</string>
     <string name="column_counter_2_2">Col 2_2</string>
     <string name="column_counter_3_2">Col 3_2</string>
+    <string name="export_success">Archivo exportado exitosamente</string>
+    <string name="export_error">Error al exportar archivo</string>
+    <string name="share_file">Compartir archivo</string>
 </resources>

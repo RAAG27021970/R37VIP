@@ -1,4 +1,4 @@
-package com.example.r37vip
+package com.r37vip.app
 
 import android.Manifest
 import android.content.pm.PackageManager
@@ -15,8 +15,8 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.r37vip.data.RouletteNumber
-import com.example.r37vip.viewmodels.RouletteViewModel
+import com.r37vip.app.data.RouletteNumber
+import com.r37vip.app.viewmodels.RouletteViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import com.google.android.material.button.MaterialButton

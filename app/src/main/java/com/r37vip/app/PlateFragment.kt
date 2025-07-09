@@ -1,4 +1,4 @@
-package com.example.r37vip
+package com.r37vip.app
 
 import android.graphics.Color
 import android.os.Bundle
@@ -10,7 +10,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import com.example.r37vip.viewmodels.RouletteViewModel
+import com.r37vip.app.viewmodels.RouletteViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 

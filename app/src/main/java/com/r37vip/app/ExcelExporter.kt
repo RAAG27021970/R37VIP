@@ -1,11 +1,10 @@
-package com.com.r37vip.app.r37vip
+package com.r37vip.app
 
 import android.content.Context
 import android.content.Intent
 import android.util.Log
 import android.widget.Toast
 import androidx.core.content.FileProvider
-import com.example.r37vip
 import com.opencsv.CSVWriter
 import java.io.File
 import java.io.FileWriter

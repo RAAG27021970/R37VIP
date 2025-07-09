@@ -1,4 +1,4 @@
-package com.example.r37vip
+package com.r37vip.app
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity

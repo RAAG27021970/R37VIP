@@ -1,4 +1,4 @@
-package com.com.r37vip.app.r37vip
+package com.r37vip.app
 
 import android.os.Bundle
 import android.util.Log
@@ -9,11 +9,11 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
-import com.com.r37vip.app.r37vip.data.RouletteNumber
-import com.com.r37vip.app.r37vip.stats.StreetDelayCalculator
-import com.com.r37vip.app.r37vip.stats.SeriesDelayCalculator
-import com.com.r37vip.app.r37vip.viewmodels.RouletteViewModel
-import com.example.r37vip.R
+import com.r37vip.app.data.RouletteNumber
+import com.r37vip.app.stats.StreetDelayCalculator
+import com.r37vip.app.stats.SeriesDelayCalculator
+import com.r37vip.app.viewmodels.RouletteViewModel
+import com.r37vip.app.R
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 

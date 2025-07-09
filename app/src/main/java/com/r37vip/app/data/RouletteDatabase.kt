@@ -1,4 +1,4 @@
-package com.example.r37vip.data
+package com.r37vip.app.data
 
 import android.content.Context
 import androidx.room.Database

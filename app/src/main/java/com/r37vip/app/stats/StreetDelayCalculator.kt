@@ -1,7 +1,7 @@
-package com.example.r37vip.stats
+package com.r37vip.app.stats
 
 import android.util.Log
-import com.example.r37vip.data.RouletteNumber
+import com.r37vip.app.data.RouletteNumber
 
 object StreetDelayCalculator {
     private const val TAG = "StreetDelayCalculator"

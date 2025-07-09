@@ -1,4 +1,4 @@
-package com.com.r37vip.app.r37vip
+package com.r37vip.app
 
 import android.content.Context
 import android.util.Log

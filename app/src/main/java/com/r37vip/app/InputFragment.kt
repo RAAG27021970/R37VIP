@@ -1,4 +1,4 @@
-package com.example.r37vip
+package com.r37vip.app
 
 import android.content.Context
 import android.os.Bundle
@@ -13,11 +13,11 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import com.example.r37vip.data.RouletteNumber
-import com.example.r37vip.data.DelayStats
-import com.example.r37vip.stats.StreetDelayCalculator
-import com.example.r37vip.stats.SeriesDelayCalculator
-import com.example.r37vip.viewmodels.RouletteViewModel
+import com.r37vip.app.data.RouletteNumber
+import com.r37vip.app.data.DelayStats
+import com.r37vip.app.stats.StreetDelayCalculator
+import com.r37vip.app.stats.SeriesDelayCalculator
+import com.r37vip.app.viewmodels.RouletteViewModel
 import com.google.android.material.button.MaterialButton
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch

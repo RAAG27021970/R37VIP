@@ -1,12 +1,12 @@
-package com.example.r37vip.viewmodels
+package com.r37vip.app.viewmodels
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.r37vip.data.RouletteDatabase
-import com.example.r37vip.data.RouletteNumber
-import com.example.r37vip.data.DelayStats
-import com.example.r37vip.data.RouletteRepository
+import com.r37vip.app.data.RouletteDatabase
+import com.r37vip.app.data.RouletteNumber
+import com.r37vip.app.data.DelayStats
+import com.r37vip.app.data.RouletteRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
