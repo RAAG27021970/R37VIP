@@ -2,4 +2,12 @@
 <resources>
 
     <style name="Theme.R37VIP" parent="android:Theme.Material.Light.NoActionBar" />
+    
+    <!-- Estilo personalizado para el hint del input -->
+    <style name="LargeBoldHintStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColorHint">#666666</item>
+    </style>
+    
 </resources>

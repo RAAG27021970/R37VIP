@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:padding="16dp">
 
-    <!-- Row 1: Statistics (stat4, stat3, stat2, stat1) -->
+    <!-- Row 1: Statistics (stat4, stat3, stat2, stat1) - HIDDEN -->
     <LinearLayout
         android:id="@+id/statisticsRow"
         android:layout_width="match_parent"
@@ -13,6 +13,7 @@
         android:orientation="horizontal"
         android:gravity="center"
         android:layout_marginTop="8dp"
+        android:visibility="gone"
         app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.card.MaterialCardView
@@ -173,7 +174,7 @@
 
     </LinearLayout>
 
-    <!-- Row 2: Counters (counter1, counter2, counter3, counter4) -->
+    <!-- Row 2: Counters (counter1, counter2, counter3, counter4) - HIDDEN -->
     <LinearLayout
         android:id="@+id/countersRow"
         android:layout_width="match_parent"
@@ -181,6 +182,7 @@
         android:orientation="horizontal"
         android:gravity="center"
         android:layout_marginTop="8dp"
+        android:visibility="gone"
         app:layout_constraintTop_toBottomOf="@id/statisticsRow">
 
         <!-- First group: counter1, counter2, counter3, counter4 -->
@@ -266,7 +268,7 @@
 
     </LinearLayout>
 
-    <!-- Row 3: Progressions (progresion1, progresion2, progresion3, progresion4) -->
+    <!-- Row 3: Progressions (progresion1, progresion2, progresion3, progresion4) - HIDDEN -->
     <LinearLayout
         android:id="@+id/progressionsRow"
         android:layout_width="match_parent"
@@ -274,6 +276,7 @@
         android:orientation="horizontal"
         android:gravity="center"
         android:layout_marginTop="8dp"
+        android:visibility="gone"
         app:layout_constraintTop_toBottomOf="@id/countersRow">
 
         <com.google.android.material.card.MaterialCardView
@@ -358,15 +361,15 @@
 
     </LinearLayout>
 
-    <!-- Recent Numbers List (now row 4) -->
+    <!-- Recent Numbers List (now row 1) -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recentNumbersList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        app:layout_constraintTop_toBottomOf="@id/progressionsRow"/>
+        app:layout_constraintTop_toTopOf="parent"/>
 
-    <!-- Third Row for Last Numbers (now becomes row 3) -->
+    <!-- Third Row for Last Numbers (now becomes row 2) -->
     <GridLayout
         android:id="@+id/lastNumbersContainer"
         android:layout_width="match_parent"
@@ -377,7 +380,7 @@
         android:useDefaultMargins="false"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
-        app:layout_constraintTop_toBottomOf="@id/progressionsRow">
+        app:layout_constraintTop_toBottomOf="@id/recentNumbersList">
 
         <!-- Primera fila: números 1-5 -->
         <com.google.android.material.card.MaterialCardView
@@ -823,12 +826,14 @@
         android:inputType="number"
         android:maxLength="2"
         android:textAlignment="center"
-        android:textSize="18sp"
+        android:textSize="24sp"
         android:textStyle="bold"
-        android:padding="8dp"
+        android:textColorHint="#666666"
+        android:padding="12dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
         android:background="@drawable/input_background"
+        android:theme="@style/LargeBoldHintStyle"
         app:layout_constraintBottom_toTopOf="@id/numericKeypad"/>
 
     <GridLayout
