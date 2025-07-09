@@ -1063,6 +1063,7 @@ class InputFragment : Fragment() {
             val button = MaterialButton(context).apply {
                 text = i.toString()
                 textSize = 20f
+                gravity = android.view.Gravity.CENTER
                 layoutParams = GridLayout.LayoutParams().apply {
                     width = 0
                     height = 110
@@ -1078,6 +1079,7 @@ class InputFragment : Fragment() {
         val clearButton = MaterialButton(context).apply {
             text = context.getString(R.string.button_clear)
             textSize = 20f
+            gravity = android.view.Gravity.CENTER
             layoutParams = GridLayout.LayoutParams().apply {
                 width = 0
                 height = 110
@@ -1091,6 +1093,7 @@ class InputFragment : Fragment() {
         val zeroButton = MaterialButton(context).apply {
             text = context.getString(R.string.button_zero)
             textSize = 20f
+            gravity = android.view.Gravity.CENTER
             layoutParams = GridLayout.LayoutParams().apply {
                 width = 0
                 height = 110
@@ -1104,6 +1107,7 @@ class InputFragment : Fragment() {
         val enterButton = MaterialButton(context).apply {
             text = context.getString(R.string.button_enter)
             textSize = 20f
+            gravity = android.view.Gravity.CENTER
             layoutParams = GridLayout.LayoutParams().apply {
                 width = 0
                 height = 110
