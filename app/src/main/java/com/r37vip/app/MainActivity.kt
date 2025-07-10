@@ -20,6 +20,34 @@ class MainActivity : AppCompatActivity() {
         viewPager = findViewById(R.id.viewPager)
         tabLayout = findViewById(R.id.tabLayout)
 
+        // Mostrar la página de bienvenida primero
+        showWelcomeScreen()
+    }
+
+    fun showWelcomeScreen() {
+        // Ocultar las pestañas y el ViewPager
+        tabLayout.visibility = ViewPager2.GONE
+        viewPager.visibility = ViewPager2.GONE
+
+        // Mostrar el fragmento de bienvenida
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.mainContainer, WelcomeFragment.newInstance())
+            .commit()
+    }
+
+    fun showMainContent() {
+        // Ocultar el fragmento de bienvenida
+        val welcomeFragment = supportFragmentManager.findFragmentById(R.id.mainContainer)
+        if (welcomeFragment is WelcomeFragment) {
+            supportFragmentManager.beginTransaction()
+                .remove(welcomeFragment)
+                .commit()
+        }
+
+        // Mostrar las pestañas y el ViewPager
+        tabLayout.visibility = TabLayout.VISIBLE
+        viewPager.visibility = ViewPager2.VISIBLE
+
         // Set up the ViewPager with the sections adapter
         val pagerAdapter = ViewPagerAdapter(this)
         viewPager.adapter = pagerAdapter
